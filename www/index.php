@@ -1,9 +1,9 @@
 <?php
 // Define database connection constants
-define('DB_HOST', 'localhost');
-define('DB_USER', 'username');
-define('DB_PASSWORD', 'password');
-define('DB_NAME', 'database_name');
+define('DB_HOST', 'db');
+define('DB_USER', 'dw3');
+define('DB_PASSWORD', 'dw3');
+define('DB_NAME', 'dw3');
 
 // Create MySQLi object
 $mysqli = new mysqli(DB_HOST, DB_USER, DB_PASSWORD, DB_NAME);
