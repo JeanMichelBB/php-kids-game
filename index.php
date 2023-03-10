@@ -1,17 +1,21 @@
-<!DOCTYPE html>
-<html lang="en">
+<?php
+// Define database connection constants
+define('DB_HOST', 'localhost');
+define('DB_USER', 'username');
+define('DB_PASSWORD', 'password');
+define('DB_NAME', 'database_name');
 
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-</head>
+// Create MySQLi object
+$mysqli = new mysqli(DB_HOST, DB_USER, DB_PASSWORD, DB_NAME);
 
-<body>
-    <?php
-    echo "Hello World";
-    ?>
-</body>
+// Check connection
+if ($mysqli->connect_errno) {
+    echo "Failed to connect to MySQL: " . $mysqli->connect_error;
+    exit();
+}
 
-</html>
+// Use the $mysqli object to execute queries and interact with the database
+
+// Close connection
+$mysqli->close();
+?>
