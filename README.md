@@ -23,11 +23,18 @@ This project is a game for kids, where they can learn about the alphabet and num
 
 ## Contributors
 
-<!-- ALL-CONTRIBUTORS-LIST:START - Do not remove or modify this section -->
-<!-- prettier-ignore-start -->
-<!-- markdownlint-disable -->
-
-<!-- markdownlint-restore -->
-<!-- prettier-ignore-end -->
-
-<!-- ALL-CONTRIBUTORS-LIST:END -->
+- [Any](https://github.com/anyruizd)
+  - Level 1 and 2
+  - Registration form
+  - History page
+  - Project & HTML structure
+- [Jean-Michel](https://github.com/JeanMichelBB)
+  - Level 3 and 4
+  - Login form
+  - Database components
+  - HTML structure
+- [Allan](https://github.com/allanbarcelos)
+  - Level 5 and 6
+  - Change password form
+  - Styles
+  - Database components

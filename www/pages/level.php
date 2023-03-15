@@ -1,3 +1,6 @@
+<?php
+    include('./components/components.php');
+?>
 <!DOCTYPE html>
 <html>
 
@@ -10,6 +13,10 @@
 </head>
 
 <body>
+    <?php 
+        createHeader();
+        createNav();
+    ?>
     <div class="container mt-5">
         <div class="row justify-content-center">
             <div class="col-md-6">
@@ -34,6 +41,7 @@
             </div>
         </div>
     </div>
+    <?php createFooter(); ?>
     <!-- Include Bootstrap JS -->
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
