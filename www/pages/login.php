@@ -1,3 +1,6 @@
+<?php
+    include('./components/components.php');
+?>
 <!DOCTYPE html>
 <html>
 
@@ -10,6 +13,10 @@
 </head>
 
 <body>
+    <?php 
+        createHeader();
+        createNav();
+    ?>
     <div class="container mt-5">
         <div class="row justify-content-center">
             <div class="col-md-6">
@@ -18,7 +25,7 @@
                         Login
                     </div>
                     <div class="card-body">
-                        <form>
+                        <form method="post" action="/helpers/auth.php">
                             <div class="form-group">
                                 <label for="username">Username:</label>
                                 <input type="text" class="form-control" id="username" name="username" required>
@@ -36,6 +43,7 @@
             </div>
         </div>
     </div>
+    <?php createFooter(); ?>
     <!-- Include Bootstrap JS -->
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>

@@ -1,3 +1,6 @@
+<?php
+    include('./components/components.php');
+?>
 <!DOCTYPE html>
 <html>
 
@@ -10,6 +13,10 @@
 </head>
 
 <body>
+    <?php 
+        createHeader();
+        createNav();
+    ?>
     <div class="container mt-5">
         <div class="row justify-content-center">
             <div class="col-md-6">
@@ -18,7 +25,7 @@
                         Register
                     </div>
                     <div class="card-body">
-                        <form>
+                        <form method="post" action="new-player.php">
                             <div class="form-group">
                                 <label for="username">Username:</label>
                                 <input type="text" class="form-control" id="username" name="username" required>
@@ -41,7 +48,7 @@
                                 <input type="text" class="form-control" id="last-name" name="last-name" required>
                             </div>
                             <button type="submit" class="btn btn-primary" name="create">Create</button>
-                            <button type="submit" class="btn btn-secondary" name="sign-in">Sign-In</button>
+                            <a class="btn btn-secondary" name="sign-in" href="/pages/login.php">Sign-In</a>
                         </form>
 
                     </div>
@@ -49,7 +56,7 @@
             </div>
         </div>
     </div>
-
+    <?php createFooter(); ?>
     <!-- Include Bootstrap JS -->
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
