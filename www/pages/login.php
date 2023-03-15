@@ -25,7 +25,7 @@
                         Login
                     </div>
                     <div class="card-body">
-                        <form method="post" action="/helpers/auth.php">
+                        <form>
                             <div class="form-group">
                                 <label for="username">Username:</label>
                                 <input type="text" class="form-control" id="username" name="username" required>

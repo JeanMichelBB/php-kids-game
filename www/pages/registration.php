@@ -25,7 +25,7 @@
                         Register
                     </div>
                     <div class="card-body">
-                        <form method="post" action="new-player.php">
+                        <form>
                             <div class="form-group">
                                 <label for="username">Username:</label>
                                 <input type="text" class="form-control" id="username" name="username" required>
@@ -48,7 +48,7 @@
                                 <input type="text" class="form-control" id="last-name" name="last-name" required>
                             </div>
                             <button type="submit" class="btn btn-primary" name="create">Create</button>
-                            <a class="btn btn-secondary" name="sign-in" href="/pages/login.php">Sign-In</a>
+                            <button type="submit" class="btn btn-secondary" name="sign-in">Sign-In</button>
                         </form>
 
                     </div>
