@@ -23,12 +23,12 @@ $mysqli->close();
 include('./pages/Game.php');
 $game = new Game();
 if(!isset($_POST['submit'])) {
-    echo "Level 1";
-    $game->level1(); // array 
+    echo "Level 3";
+    $game->level3();
 }
 
 if(isset($_POST['submit'])) {
-    $userInput = trim($_POST['answer-lvl1']);
+    $userInput = trim($_POST['answer-lvl3']);
     $rightAnswer = $_POST['right-answer'];
 
     echo $game->checkAnswer($userInput, $rightAnswer) ? 'User passes the level' : 'User fails the level';

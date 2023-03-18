@@ -2,32 +2,41 @@
 
 class Game
 {
-
-    public function level1() {
+    public function level1()
+    {
         $letters = $this->generateSetOfRandomLetters(6);
         $rightAnswer = $this->createCorrectAnswer($letters, 'asc');
         $this->displayForm('level1', $letters, $rightAnswer);
     }
 
-    public function level2() {
+    public function level2()
+    {
         $letters = $this->generateSetOfRandomLetters(6);
         $rightAnswer = $this->createCorrectAnswer($letters, 'desc');
-        $this->displayForm('level1', $letters, $rightAnswer);
+        $this->displayForm('level2', $letters, $rightAnswer);
     }
 
-    public function level3() {
-        echo "<p>Level 3 </p>";
+    public function level3()
+    {
+        $numbers = $this->createArrayOfNum(); 
+        $rightAnswer = $this->createCorrectAnswer($numbers, 'asc');  
+        $this->displayForm('level3', $numbers, $rightAnswer);
     }
 
-    public function level4() {
-        echo "<p>Level 4 </p>";
+    public function level4()
+    {
+        $numbers = $this->createArrayOfNum(); 
+        $rightAnswer = $this->createCorrectAnswer($numbers, 'asc');  
+        $this->displayForm('level4', $numbers, $rightAnswer);
     }
 
-    public function level5() {
+    public function level5()
+    {
         echo "<p>Level 5 </p>";
     }
 
-    public function level6() {
+    public function level6()
+    {
         echo "<p>Level 6 </p>";
     }
 
@@ -69,28 +78,34 @@ class Game
         return $original;
     }
 
-
-    private function displayForm($level, $userOutput, $rightAnswer) {
+    private function displayForm($level, $userOutput, $rightAnswer)
+    {
         echo '<form method="post">';
-        switch($level) {
+        switch ($level) {
             case 'level1':
                 echo 'Write the letters in ascending order: 
                 <p>' . implode("", $userOutput) . '</p>
-                <input type="text" name="answer-lvl1">
-                <input type="hidden" name="right-answer" value="' . implode($rightAnswer) . '">';
+                <input type="text" name="answer-lvl1">';
+                $rightAnswer = implode($rightAnswer);
                 break;
             case 'level2':
                 echo 'Write the letters in descending order: 
                 <p>' . implode("", $userOutput) . '</p>
-                <input type="text" name="answer-lvl2">
-                <input type="hidden" name="right-answer" value="' . implode($rightAnswer) . '">';
+                <input type="text" name="answer-lvl2">';
+                $rightAnswer = implode($rightAnswer);
                 break;
 
             case 'level3':
-                echo "Level 3";
+                echo 'Write the number in ascending order: 
+                <p>' . implode(", ", $userOutput) . '</p>
+                <input type="text" name="answer-lvl3">';
+                $rightAnswer = implode(", ", $rightAnswer);
                 break;
             case 'level4':
-                echo "Level 4";
+                echo 'Write the number in descending order: 
+                <p>' . implode("", $userOutput) . '</p>
+                <input type="text" name="answer-lvl4">';
+                $rightAnswer = implode(", ", $rightAnswer);
                 break;
             case 'level5':
                 echo "Level 5";
@@ -102,6 +117,8 @@ class Game
                 echo "No level";
                 break;
         }
-        echo '<input type="submit" value="Submit" name="submit"></form>';
-      }
+
+        echo '<input type="hidden" name="right-answer" value="' . $rightAnswer . '">
+              <input type="submit" value="Submit" name="submit"></form>';
+    }
 }
