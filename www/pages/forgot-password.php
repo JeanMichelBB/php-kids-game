@@ -25,7 +25,7 @@
                         Forgot Password
                     </div>
                     <div class="card-body">
-                        <form>
+                        <form method="POST" action='../helpers/auth.php'>
                             <div class="form-group">
                                 <label for="existing-username">Existing Username:</label>
                                 <input type="text" class="form-control" id="existing-username" name="existing-username"
@@ -42,9 +42,18 @@
                                     name="confirm-new-password" required>
                             </div>
                             <button type="submit" class="btn btn-primary" name="modify">Modify</button>
-                            <button type="submit" class="btn btn-secondary" name="sign-in">Sign-In</button>
+                            <a href="login.php" class="btn btn-secondary" name="Sign-In">Sign-In</a>
                         </form>
-
+                    <?php
+                        if (isset($_GET['error'])) {
+                            $error_message = $_GET['error'];
+                            echo "<div class='alert alert-danger mt-3'>$error_message</div>";
+                        }
+                        if (isset($_GET['success'])) {
+                            $success_message = $_GET['success'];
+                            echo "<div class='alert alert-success mt-3'>$success_message</div>";
+                        }
+                    ?>
                     </div>
                 </div>
             </div>
@@ -56,7 +65,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
 
-    <script>
+    <!-- <script>
         const form = document.querySelector('form');
         const existingUsername = form.querySelector('#existing-username');
         const newPassword = form.querySelector('#new-password');
@@ -93,7 +102,7 @@
             // Modify password for given username
         }
 
-    </script>
+    </script> -->
 </body>
 
 </html>
