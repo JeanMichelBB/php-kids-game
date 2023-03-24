@@ -140,7 +140,7 @@ class ManipulateDB
     public function __destruct()
     {
         //Close automatically the connection from MySQL when it is opened at the end          
-        if ($this->connection === TRUE) {
+        if ($this->connection) {
             $this->connection->close();
         }
     }

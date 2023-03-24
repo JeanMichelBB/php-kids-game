@@ -54,8 +54,6 @@ class InsertRowToTable extends ManipulateDB
                     if ($this->executeSql($this->sqlCode()['descScore']) === TRUE) {
                         //4-Insert data to the Table
                         $stmt = $this->connection->prepare($this->sqlCode()['insertScore']);
-                        // TODO: Check if there's a better way to get the params
-                        // $stmt->bind_param("ssss", date("Y-m-d H:i:s"), $_SESSION['result'], $_SESSION['lives'], $_SESSION['registrationOrder']);
                         $stmt->bind_param("ssss", date("Y-m-d H:i:s"), $result, $lives, $registrationOrder);
                         if($stmt->execute() === FALSE) {
                             echo $this->messages()['link']['tryAgain'];
