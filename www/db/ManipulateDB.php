@@ -31,6 +31,10 @@ class ManipulateDB
         $player = PLAYER;
         $auth = AUTHENTICATOR;
         $score = SCORE;
+
+        // views
+        $history = HISTORY_VIEW;
+        $playerAuth = PLAYER_AUTH_VIEW;
         // Create database
         $sqlCode['createDb'] = "CREATE DATABASE IF NOT EXISTS $dbName;";
         // Create tables and history view
@@ -55,23 +59,26 @@ class ManipulateDB
             registrationOrder INTEGER, 
             FOREIGN KEY (registrationOrder) REFERENCES player(registrationOrder)
         )CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;
-        CREATE OR REPLACE VIEW history AS
+        CREATE OR REPLACE VIEW $history AS
             SELECT s.scoreTime, p.id, p.fName, p.lName, s.result, s.livesUsed 
             FROM player p, score s
             WHERE p.registrationOrder = s.registrationOrder;
-        CREATE OR REPLACE VIEW playerAuth AS
+        CREATE OR REPLACE VIEW $playerAuth AS
             SELECT p.userName AS userName, a.passCode AS passCode
             FROM player p, authenticator a
             WHERE p.registrationOrder = a.registrationOrder;";
         
-        // Desc tables
+        // Desc tables & views
         $sqlCode['descPlayer'] = "DESC $player;";
         $sqlCode['descAuth'] = "DESC $auth;";
         $sqlCode['descScore'] = "DESC $score;";
+        $sqlCode['descHistory'] = "DESC $history;";
+        $sqlCode['descPlayerAuth'] = "DESC $playerAuth;";
 
         // Select tables
-        $sqlCode['selectPlayer'] = "SELECT * FROM $player;";
-        $sqlCode['selectAuth'] = "SELECT * FROM $auth;";
+        $sqlCode['selectPlayerAuth'] = "SELECT * FROM $playerAuth WHERE userName = ?;";
+        $sqlCode['selectPlayer'] = "SELECT * FROM $player WHERE userName = ?;";
+        $sqlCode['selectHistory'] = "SELECT * FROM $history WHERE id = ?;";
         $sqlCode['selectScore'] = "SELECT * FROM $score;";
 
         // Insert tables 
@@ -128,26 +135,6 @@ class ManipulateDB
             $this->sqlExec = $invokeQuery;
         return TRUE;
     }
-    
-    // Declare the method to display selected data 
-    protected function displaySelectData(){
-        //Calculate the number of rows available
-        $number_of_rows = $this->sqlExec->num_rows;
-        //Use a loop to display the rows one by one
-        echo "<table>";
-        echo "<tr><td>ID</td><td>First Name</td><td>Last Name</td><td>Email</td></tr>";
-        for ($j = 0; $j < $number_of_rows; ++$j) {
-            echo "<tr>";
-            //Assign the records of each row to an associative array
-            $each_row = $this->sqlExec->fetch_array(MYSQLI_ASSOC);
-            //Display each the record corresponding to each column
-            foreach ($each_row as $item)
-                echo "<td>" . $item . "</td>";
-            echo "</tr>";
-        }   
-        echo "</table>";
-    }
-    
 
     //Declare the method to disconnect from the DBMS
     public function __destruct()

@@ -17,10 +17,10 @@ class InsertRowToTable extends ManipulateDB
                             echo $this->messages()['link']['tryAgain'];
                             die($this->messages()['error']['insertTab']);
                         } else {
+                            $password = password_hash($password, PASSWORD_DEFAULT);
                             $registrationOrder = $this->connection->insert_id;
                             $stmt = $this->connection->prepare($this->sqlCode()['insertAuth']);
                             $stmt->bind_param("ss", $password, $registrationOrder);
-
                             if($stmt->execute() === FALSE) {
                                 echo $this->messages()['link']['tryAgain'];
                                 die($this->messages()['error']['insertTab']);
@@ -54,7 +54,7 @@ class InsertRowToTable extends ManipulateDB
                     if ($this->executeSql($this->sqlCode()['descScore']) === TRUE) {
                         //4-Insert data to the Table
                         $stmt = $this->connection->prepare($this->sqlCode()['insertScore']);
-                        // TODO: Find a way to get the params 
+                        // TODO: Check if there's a better way to get the params
                         // $stmt->bind_param("ssss", date("Y-m-d H:i:s"), $_SESSION['result'], $_SESSION['lives'], $_SESSION['registrationOrder']);
                         $stmt->bind_param("ssss", date("Y-m-d H:i:s"), $result, $lives, $registrationOrder);
                         if($stmt->execute() === FALSE) {
