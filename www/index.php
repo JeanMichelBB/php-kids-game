@@ -10,10 +10,10 @@ $db = new CreateDBAndTables();
 $db->creatDBTables();
 
 if(!isset($_SESSION['username'])) {
-    header('Location: ../pages/level.php');
-
-} else {
     header('Location: ../pages/login.php');
+    
+} else {
+    header('Location: ../pages/level.php');
 }
 
 

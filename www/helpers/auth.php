@@ -35,7 +35,7 @@ if (isset($_POST['modify'])) {
             header("Location: ../pages/forgot-password.php?error=" . urlencode($error_message));
         }
     } else {
-        $error_message = "Sorry, the existing username you entered is incorrect!";
+        $error_message = "Sorry, the username you entered is incorrect!";
         header("Location: ../pages/forgot-password.php?error=" . urlencode($error_message));
     }
 }
@@ -43,7 +43,7 @@ if (isset($_POST['modify'])) {
 function checkExistingUsername($existingUsername){
     $select = new SelectRowFromTable();
     $player = $select->selectFromPlayer($existingUsername);
-    if ($existingUsername == $player['username']) {
+    if ($existingUsername == $player['userName']) {
         return true;
     } else {
         return false;
@@ -51,10 +51,13 @@ function checkExistingUsername($existingUsername){
 }
 
 function modifyPassword($existingUsername, $newPassword){
-    // TODO: replace with database
-    $admin = 'admin';
-    $adminPassword = 'admin';
-    if ($existingUsername == $admin) {
+    $select = new SelectRowFromTable();
+    $player = $select->selectFromPlayer($existingUsername);
+    $registrationOrder = $player['registrationOrder'];
+    $update = new UpdateTable();
+    $result = $update->updatePlayerAuth($registrationOrder, $newPassword);
+
+    if ($result) {
         return true;
     } else {
         return false;

@@ -86,6 +86,10 @@ class ManipulateDB
         $sqlCode['insertAuth']="INSERT INTO $auth (passCode, registrationOrder) VALUES (?, ?)";
         $sqlCode['insertScore']="INSERT INTO $score (scoreTime, result , livesUsed, registrationOrder) VALUES (?, ?, ?, ?)";
 
+        // update tables
+        $sqlCode['updatePlayerAuth'] = "UPDATE $auth SET passCode = ? WHERE registrationOrder = ?;";
+
+
         return $sqlCode;
     }
 
