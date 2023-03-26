@@ -1,22 +1,20 @@
 <?php
+include_once('../db/db.php');
 
 if (isset($_POST['connect'])) {
-
     $username = $_POST['username'];
     $password = $_POST['password'];
     if (checkCredentials($username, $password)) {
         header('Location: ../pages/level.php');
     } else {
-        $error_message = "Sorry, you entered a wrong username!";
+        $error_message = "Sorry, you entered a wrong username or password!";
         header("Location: ../pages/login.php?error=" . urlencode($error_message));
-        }
+    }
 }
 
 function checkCredentials($username, $password){
-    // TODO: replace with database
-    $admin = 'admin';
-    $adminPassword = 'admin';
-    if ($username == $admin && $password == $adminPassword) {
+    $select = new SelectRowFromTable();
+    if($select->selectFromPlayerAuth($username, $password)) {
         return true;
     } else {
         return false;
@@ -43,16 +41,16 @@ if (isset($_POST['modify'])) {
 }
 
 function checkExistingUsername($existingUsername){
-    // TODO: replace with database
-    $admin = 'admin';
-    if ($existingUsername == $admin) {
+    $select = new SelectRowFromTable();
+    $player = $select->selectFromPlayer($existingUsername);
+    if ($existingUsername == $player['username']) {
         return true;
     } else {
         return false;
     }
 }
 
-function modifyPassword($existingUsername){
+function modifyPassword($existingUsername, $newPassword){
     // TODO: replace with database
     $admin = 'admin';
     $adminPassword = 'admin';
@@ -69,6 +67,7 @@ if (isset($_POST['create'])) {
     $confirmPassword = $_POST['confirm-password'];
     $firstName = $_POST['first-name'];
     $lastName = $_POST['last-name'];
+
     if (checkUsername($username)) {
         if ($password == $confirmPassword) {
             createAccount($username, $password, $firstName, $lastName);
@@ -85,9 +84,10 @@ if (isset($_POST['create'])) {
 }
 
 function checkUsername($username){
-    // TODO:replace with database
-    $admin = 'admin';
-    if ($username == $admin) {
+    $select = new SelectRowFromTable();
+    $player = $select->selectFromPlayer($username);
+
+    if ($username == $player['userName']) {
         return false;
     } else {
         return true;
@@ -95,10 +95,10 @@ function checkUsername($username){
 }
 
 function createAccount($username, $password, $firstName, $lastName){
-    // TODO: replace with database
-    $admin = 'admin';
-    $adminPassword = 'admin';
-    if ($username == $admin) {
+    $insert = new InsertRowToTable();
+    $result = $insert->insertNewPlayer($firstName, $lastName, $username, $password);
+
+    if ($result) {
         return true;
     } else {
         return false;
