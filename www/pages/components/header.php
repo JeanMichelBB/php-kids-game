@@ -11,7 +11,6 @@
 <body>
 <?php
 function createHeader() {
-// header with the logo (img src="../../IMG/LogoKidGame.png" alt="logo" width="100" height="100") end left and the title "Kid's game" middle
     echo <<<EOT
     <header>
         <div class="container">
@@ -19,7 +18,7 @@ function createHeader() {
                 <div class="col-md-12">
                     <div class="d-flex flex-row justify-content-space-evenly align-items-center">
                         <div class="p-2">
-                            <img src="../../IMG/LogoKidGame.png" alt="logo" width="100" height="100">
+                            <img src="../../img/LogoKidGame.png" alt="logo" width="100" height="100">
                         </div>
 
                         <div class="p-2">
