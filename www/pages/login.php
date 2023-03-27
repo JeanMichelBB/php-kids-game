@@ -13,9 +13,10 @@ include('./components/components.php');
 </head>
 
 <body>
-    <?php
-    createHeader();
-    createNav();
+    <?php 
+        $isLoggedIn = FALSE; // TODO - Change this to TRUE when the user is logged in
+        createHeader();
+        createNav($isLoggedIn);
     ?>
     <div class="container mt-5">
         <div class="row justify-content-center">
