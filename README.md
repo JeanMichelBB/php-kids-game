@@ -25,16 +25,14 @@ This project is a game for kids, where they can learn about the alphabet and num
 
 - [Any](https://github.com/anyruizd)
   - Level 1 and 2
-  - Registration form
+  - Database components
   - History page
   - Project & HTML structure
 - [Jean-Michel](https://github.com/JeanMichelBB)
   - Level 3 and 4
-  - Login form
+  - Login, Registration and Change password forms
   - Database components
-  - HTML structure
 - [Allan](https://github.com/allanbarcelos)
   - Level 5 and 6
-  - Change password form
-  - Styles
-  - Database components
+  - HTML and styles of the forms
+  - Project setup

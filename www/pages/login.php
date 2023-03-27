@@ -1,5 +1,5 @@
 <?php
-    include('./components/components.php');
+include('./components/components.php');
 ?>
 <!DOCTYPE html>
 <html>
@@ -13,9 +13,9 @@
 </head>
 
 <body>
-    <?php 
-        createHeader();
-        // createNav();
+    <?php
+    createHeader();
+    createNav();
     ?>
     <div class="container mt-5">
         <div class="row justify-content-center">
@@ -25,7 +25,7 @@
                         Login
                     </div>
                     <div class="card-body">
-                        <form>
+                        <form method="POST" action='../helpers/auth.php'>
                             <div class="form-group">
                                 <label for="username">Username:</label>
                                 <input type="text" class="form-control" id="username" name="username" required>
@@ -33,12 +33,25 @@
                             <div class="form-group">
                                 <label for="password">Password:</label>
                                 <input type="password" class="form-control" id="password" name="password" required>
+                                <?php
+                                if (isset($_GET['error'])) {
+                                    $error_message = $_GET['error'];
+                                    // show forgot password link
+                                    echo "<a href='forgot-password.php' class='btn btn-link'>Forgotten? Please, change your password.</a>";
+                                }
+                                ?>
                             </div>
                             <button type="submit" class="btn btn-primary" name="connect">Connect</button>
-                            <button type="submit" class="btn btn-secondary" name="sign-up">Sign-Up</button>
+                            <a href="registration.php" class="btn btn-secondary" name="sign-up">Sign up</a>
                         </form>
-
                     </div>
+                    <?php
+                    if (isset($_GET['error'])) {
+                        $error_message = $_GET['error'];
+                        echo "<div class='alert alert-danger mt-3'>$error_message</div>";
+                    }
+
+                    ?>
                 </div>
             </div>
         </div>
@@ -48,7 +61,7 @@
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
-    <script>
+    <!-- <script>
 
         const form = document.querySelector('form');
         const username = form.querySelector('#username');
@@ -76,7 +89,7 @@
             // Start session
         }
 
-    </script>
+    </script> -->
 </body>
 
 </html>
