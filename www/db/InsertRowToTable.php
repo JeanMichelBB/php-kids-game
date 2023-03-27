@@ -24,6 +24,8 @@ class InsertRowToTable extends ManipulateDB
                             if($stmt->execute() === FALSE) {
                                 echo $this->messages()['link']['tryAgain'];
                                 die($this->messages()['error']['insertTab']);
+                            } else {
+                                return TRUE;
                             }
                         }
                     }

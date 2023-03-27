@@ -25,7 +25,7 @@
                         Register
                     </div>
                     <div class="card-body">
-                        <form>
+                        <form method="POST" action='../helpers/auth.php'>
                             <div class="form-group">
                                 <label for="username">Username:</label>
                                 <input type="text" class="form-control" id="username" name="username" required>
@@ -48,11 +48,21 @@
                                 <input type="text" class="form-control" id="last-name" name="last-name" required>
                             </div>
                             <button type="submit" class="btn btn-primary" name="create">Create</button>
-                            <button type="submit" class="btn btn-secondary" name="sign-in">Sign-In</button>
+                            <a href="login.php" class="btn btn-secondary" name="sign-in">Sign in</a>
                         </form>
 
                     </div>
                 </div>
+                <?php
+                    if (isset($_GET['error'])) {
+                        $error_message = $_GET['error'];
+                        echo "<div class='alert alert-danger mt-3'>$error_message</div>";
+                    }
+                    if (isset($_GET['success'])) {
+                        $success_message = $_GET['success'];
+                        echo "<div class='alert alert-success mt-3'>$success_message</div>";
+                    }
+                ?>
             </div>
         </div>
     </div>
@@ -62,7 +72,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
 
-    <script>
+    <!-- <script>
 
         const form = document.querySelector('form');
         const username = form.querySelector('#username');
@@ -106,7 +116,7 @@
             // Return true if username exists, false otherwise
         }
 
-    </script>
+    </script> -->
 </body>
 
-</html>
+</html> 

@@ -16,10 +16,9 @@ class SelectRowFromTable extends ManipulateDB
                         //4-Select data From the Table
                         $stmt = $this->connection->prepare($this->sqlCode()['selectPlayer']);
                         $stmt->bind_param("s", $username);
-
                         if ($stmt->execute() === TRUE) {
                             $result = $stmt->get_result();
-                            $row = $result->fetch_assoc();
+                            $row = $result->fetch_assoc();                         
                             return $row;
                         }
                         //Cannot Select data From the Table
