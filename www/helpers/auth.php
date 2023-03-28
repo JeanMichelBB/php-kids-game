@@ -1,4 +1,5 @@
 <?php
+session_start();
 include_once('../db/db.php');
 
 if (isset($_POST['connect'])) {
@@ -6,11 +7,12 @@ if (isset($_POST['connect'])) {
     $password = $_POST['password'];
     if (checkCredentials($username, $password)) {
         header('Location: ../pages/level.php');
-        session_start();
         $_SESSION['username'] = $username;
+        unset($_SESSION['login_error']);
     } else {
         $error_message = "Sorry, you entered a wrong username or password!";
-        header("Location: ../pages/login.php?error=" . urlencode($error_message));
+        $_SESSION['login_error'] = $error_message;
+        header("Location: ../pages/login.php");
     }
 }
 
@@ -32,14 +34,17 @@ if (isset($_POST['modify'])) {
         if ($newPassword == $confirmNewPassword) {
             modifyPassword($existingUsername, $newPassword);
             $success_message = "Password successfully modified!";
-            header("Location: ../pages/forgot-password.php?success=" . urlencode($success_message));
+            $_SESSION['update_success'] = $success_message;
+            header("Location: ../pages/forgot-password.php");
         } else {
             $error_message = "Sorry, the new password and confirm new password fields do not match!";
-            header("Location: ../pages/forgot-password.php?error=" . urlencode($error_message));
+            $_SESSION['update_error'] = $error_message;
+            header("Location: ../pages/forgot-password.php");
         }
     } else {
         $error_message = "Sorry, the username you entered is incorrect!";
-        header("Location: ../pages/forgot-password.php?error=" . urlencode($error_message));
+        $_SESSION['update_error'] = $error_message;
+        header("Location: ../pages/forgot-password.php");
     }
 }
 
@@ -78,14 +83,17 @@ if (isset($_POST['create'])) {
         if ($password == $confirmPassword) {
             createAccount($username, $password, $firstName, $lastName);
             $success_message = "Account successfully created!";
-            header("Location: ../pages/registration.php?success=" . urlencode($success_message));
+            $_SESSION['reg_success'] = $success_message;
+            header("Location: ../pages/registration.php");
         } else {
             $error_message = "Sorry, the password and confirm password fields do not match!";
-            header("Location: ../pages/registration.php?error=" . urlencode($error_message));
+            $_SESSION['reg_error'] = $error_message;
+            header("Location: ../pages/registration.php");
         }
     } else {
         $error_message = "Sorry, the username you entered is already taken!";
-        header("Location: ../pages/registration.php?error=" . urlencode($error_message));
+        $_SESSION['reg_error'] = $error_message;
+        header("Location: ../pages/registration.php");
     }
 }
 
