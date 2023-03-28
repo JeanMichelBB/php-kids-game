@@ -1,4 +1,5 @@
 <?php
+    session_start();
     include('./components/components.php');
 ?>
 <!DOCTYPE html>

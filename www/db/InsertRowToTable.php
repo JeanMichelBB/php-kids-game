@@ -12,7 +12,7 @@ class InsertRowToTable extends ManipulateDB
                     if ($this->executeSql($this->sqlCode()['descPlayer']) === TRUE) {
                         //4-Insert data to the Table
                         $stmt = $this->connection->prepare($this->sqlCode()['insertPlayer']);
-                        $stmt->bind_param("ssss", $firstName, $lastName, $username, date("Y-m-d H:i:s"));
+                        $stmt->bind_param("ssss", $firstName, $lastName, $username, date("Y-m-d"));
                         if($stmt->execute() === FALSE) {
                             echo $this->messages()['link']['tryAgain'];
                             die($this->messages()['error']['insertTab']);

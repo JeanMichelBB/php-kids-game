@@ -1,4 +1,9 @@
 <?php
+    session_start();
+    
+    if(!isset($_SESSION['username'])) {
+        header('Location: ../pages/login.php');
+    } 
     include('./components/components.php');
 ?>
 <!DOCTYPE html>
@@ -50,7 +55,7 @@
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
-    <script>
+    <!-- <script>
         const form = document.querySelector('form');
         const input = document.querySelector('#inputText');
         const result = document.querySelector('#result');
@@ -86,7 +91,7 @@
         });
 
 
-    </script>
+    </script> -->
 </body>
 
 </html>

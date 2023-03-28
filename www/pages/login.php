@@ -37,7 +37,6 @@ include('./components/components.php');
                                 <?php
                                 if (isset($_GET['error'])) {
                                     $error_message = $_GET['error'];
-                                    // show forgot password link
                                     echo "<a href='forgot-password.php' class='btn btn-link'>Forgotten? Please, change your password.</a>";
                                 }
                                 ?>

@@ -3,9 +3,11 @@
 
     function createNav()
     { 
-        $isLoggedIn = TRUE; // TODO - Change this to TRUE when the user is logged in
-        if ($isLoggedIn == TRUE) {
-
+        $username = $_SESSION['username'];
+        $life = $_SESSION['life'];
+        $Progress = $_SESSION['Progress'];
+         // TODO - Change this to TRUE when the user is logged in
+        if (isset($username)) {
             echo <<<EOT
 
         <nav class="navbar navbar-expand-lg navbar-light bg-light" style="margin-bottom: 200px;"> <!-- TODO MARGIN bottom-->
@@ -17,13 +19,16 @@
                 <div class="navbar-nav">
                     <a class="nav-link" href="../pages/login.php">Login</a>
                     <a class="nav-link" href="../pages/registration.php">Registration</a>
-                    <a class="nav-link href="../pages/history.php">History</a>
-                    <a class="nav-link" href="../pages/forgot-password.php">Forgot-password</a> <!-- TODO - need? -->
+                    <a class="nav-link" href="../pages/history.php">History</a>
+                    <a class="nav-link" href="../pages/forgot-password.php">Forgot-password</a>
+                    <div class="nav-link ">Welcome, $username</div>
                 </div>
-                <div class="navbar-nav ml-auto"> <! -- show number of life left and the progress bar -->
-                <a class="nav-link" href="#">Life: 6</a>
-                <a class="nav-link" href="#">Progress: 0%</a>
-                <a class="nav-link" href="../pages/login.php">Logout</a> <!-- TODO - end the session -->
+                <div class="navbar-nav ml-auto">
+                <div class="nav-link">Life: $life</div>
+                <div class="nav-link">Progress: $Progress%</div>
+                <form action="../helpers/auth.php" method="POST">
+                    <button type="submit" class="btn btn-primary" name="logout">Logout</button>
+                </form>
                     
             </div>
         </nav>
