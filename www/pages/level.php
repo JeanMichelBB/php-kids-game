@@ -88,6 +88,10 @@
 
 <body>
     <?php 
+        $isLoggedIn = isset($_SESSION['username']);
+        if (!$isLoggedIn) {
+            header('Location: login.php');
+        }
         createHeader();
         createNav();
     ?>

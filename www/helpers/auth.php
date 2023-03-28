@@ -1,10 +1,12 @@
 <?php
+session_start();
 include_once('../db/db.php');
 
 if (isset($_POST['connect'])) {
     $username = $_POST['username'];
     $password = $_POST['password'];
     if (checkCredentials($username, $password)) {
+        $_SESSION['username'] = $username;
         header('Location: ../pages/level.php');
         session_start();
         $_SESSION['username'] = $username;
@@ -12,6 +14,10 @@ if (isset($_POST['connect'])) {
         $error_message = "Sorry, you entered a wrong username or password!";
         header("Location: ../pages/login.php?error=" . urlencode($error_message));
     }
+}
+if (isset($_POST['logout'])) {
+    session_destroy();
+    header('Location: ../pages/login.php');
 }
 
 function checkCredentials($username, $password){
@@ -109,4 +115,6 @@ function createAccount($username, $password, $firstName, $lastName){
     } else {
         return false;
     }
+
+
 }

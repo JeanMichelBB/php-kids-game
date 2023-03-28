@@ -13,9 +13,10 @@ include('./components/components.php');
 </head>
 
 <body>
-    <?php
-    createHeader();
-    createNav();
+    <?php 
+        
+        createHeader();
+        createNav();
     ?>
     <div class="container mt-5">
         <div class="row justify-content-center">
@@ -36,7 +37,6 @@ include('./components/components.php');
                                 <?php
                                 if (isset($_GET['error'])) {
                                     $error_message = $_GET['error'];
-                                    // show forgot password link
                                     echo "<a href='forgot-password.php' class='btn btn-link'>Forgotten? Please, change your password.</a>";
                                 }
                                 ?>
