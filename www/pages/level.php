@@ -54,7 +54,9 @@
     if(isset($_POST['submit-answer'])) {
         $userInput = $_POST['answer'];
         $rightAnswer = explode(",",$_POST['right-answer']);
-
+        if ($livesUsed == MAX_LIVES) {
+            header('Location: ../pages/gameover.php');
+        }
         if ($game->checkAnswer($userInput, $rightAnswer)) {
             $_SESSION['level_success'] = 'You have successfully completed level ' . $level . '!';
             $_SESSION['level_fail'] = '';
@@ -65,24 +67,22 @@
             header('Location: level.php');
         } else {
             $livesUsed++;
-            $_SESSION['livesUsed']++;
+            $_SESSION['livesUsed'] = $livesUsed;
             $_SESSION['level_fail'] = 'You have failed level ' . $level . '!';
             if ($livesUsed == MAX_LIVES) {
+                $livesUsed = 0;
+                $_SESSION['livesUsed'] = $livesUsed;
                 $_SESSION['game_fail'] = 'Game over!';
-                header('Location: ../pages/level.php');
+                header('Location: ../pages/gameover.php');
             }
         }
     }
 
     if(isset($_POST['next-level'])){
-        if ($level == MAX_LEVEL) {
-            $_SESSION['game_success'] = 'You have successfully completed the game!';
-        }
         $level++;
         $_SESSION['level'] = $level;
         $_SESSION['level_fail'] = '';
         $_SESSION['level_success'] = '';
-        
         header('Location: level.php');
     }
 
@@ -127,12 +127,8 @@
             $_SESSION['level_fail'] = '';
             $successMessage = $_SESSION['level_success'];
         }
-        $isLoggedIn = isset($_SESSION['username']);
-        if (!$isLoggedIn) {
-            header('Location: login.php');
-        }
-        createHeader();
-        createNav();
+        echo createHeader();
+        echo createNav();
     ?>
     <div class="container mt-5">
         <div class="row justify-content-center">
@@ -141,6 +137,9 @@
                 if ($failMessage) {
                     echo "<div class='alert alert-dismissible alert-danger fade show mt-3'>
                                 $failMessage
+                                <form action=\"level.php\" method=\"post\">
+                                    <button type=\"submit\" class=\"level-btn alert-link\" name=\"try-again\">Try again</button>
+                                </form>
                                 <button type=\"button\" class=\"close\" data-dismiss=\"alert\" aria-label=\"Close\">
                                     <span aria-hidden=\"true\">&times;</span>
                                 </button>
@@ -148,15 +147,9 @@
                 } if($successMessage) {
                     echo "<div class='alert alert-dismissible alert-success fade show mt-3'>
                                 $successMessage
-                                <div class=\"d-flex\">
                                 <form action=\"level.php\" method=\"post\">
                                     <input type=\"submit\" class=\"level-btn alert-link\" name=\"next-level\" value='Next Level' />
                                 </form>
-                                
-                                <form action=\"level.php\" method=\"post\">
-                                    <button type=\"submit\" class=\"level-btn alert-link\" name=\"try-again\">Try again</button>
-                                </form>
-                                </div>
                                 <button type=\"button\" class=\"close\" data-dismiss=\"alert\" aria-label=\"Close\">
                                     <span aria-hidden=\"true\">&times;</span>
                                 </button>
@@ -166,6 +159,7 @@
                 <div class="card">
                     <div class="card-header">
                         <b>Level <?php echo $level; ?></b>: <?php echo $game->message; ?>
+                        <p>Lives: <?php echo MAX_LIVES - $_SESSION['livesUsed']; ?></p>
                     </div>
                     <div class="card-body px-5">
                         <form action="level.php" method="post">
@@ -180,13 +174,14 @@
                                 <div class="form-row justify-content-around">
                                     <?php
                                     for($i = 0; $i < count($game->answer); $i++) {
-                                        echo "<input maxlength=\"$inputMaxLength\" type='text' class='form-control text-center col-md-1' name='answer[]' >";
+                                        echo "<input required maxlength=\"$inputMaxLength\" type='text' class='form-control text-center col-md-1' name='answer[]' >";
                                     }
                                     ?>
                                 </div>
                             </div>
                             <button type="submit" class="btn btn-primary" name="submit-answer">Submit</button>
                             <input type="hidden" name="right-answer" value="<?php echo implode(",",$game->answer); ?>">
+                            <input type="hidden" name="question" value="<?php echo implode(",",$game->output); ?>">
                         </form>
 
                         <div class="mt-3">
@@ -197,7 +192,7 @@
             </div>
         </div>
     </div>
-    <?php createFooter(); ?>
+    <?php echo createFooter(); ?>
     <!-- Include Bootstrap JS -->
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>

@@ -1,8 +1,6 @@
-
 <?php
 function createHeader() {
-    echo <<<EOT
-    <header>
+    return '<header>
         <div class="container">
             <div class="row">
                 <div class="col-md-12">
@@ -12,12 +10,11 @@ function createHeader() {
                         </div>
 
                         <div class="p-2">
-                            <h1 class="text-center">Kid's Game</h1>
+                            <h1 class="text-center">Kid\'s Game</h1>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-    </header>
-EOT;
+    </header>';
 }
