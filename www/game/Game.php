@@ -2,7 +2,7 @@
 session_start();
 class Game
 {
-    public $output = '';
+    public $output = [];
     public $answer;
 
     public $message = '';
@@ -38,7 +38,6 @@ class Game
         $_SESSION['level'] = 3;
         $numbers = $this->createArrayOfNum(); 
         $rightAnswer = $this->createCorrectAnswer($numbers, 'asc');  
-        $this->displayForm('level3', $numbers, $rightAnswer);
     }
 
     public function level4()
@@ -46,7 +45,6 @@ class Game
         $_SESSION['level'] = 4;
         $numbers = $this->createArrayOfNum(); 
         $rightAnswer = $this->createCorrectAnswer($numbers, 'asc');  
-        $this->displayForm('level4', $numbers, $rightAnswer);
     }
 
     public function level5()
@@ -97,47 +95,4 @@ class Game
         return $original;
     }
 
-    private function displayForm($level, $userOutput, $rightAnswer)
-    {
-        echo '<form method="post">';
-        switch ($level) {
-            case 'level1':
-                echo 'Write the letters in ascending order: 
-                <p>' . implode("", $userOutput) . '</p>
-                <input type="text" name="answer-lvl1">';
-                $rightAnswer = implode($rightAnswer);
-                break;
-            case 'level2':
-                echo 'Write the letters in descending order: 
-                <p>' . implode("", $userOutput) . '</p>
-                <input type="text" name="answer-lvl2">';
-                $rightAnswer = implode($rightAnswer);
-                break;
-
-            case 'level3':
-                echo 'Write the number in ascending order: 
-                <p>' . implode(", ", $userOutput) . '</p>
-                <input type="text" name="answer-lvl3">';
-                $rightAnswer = implode(", ", $rightAnswer);
-                break;
-            case 'level4':
-                echo 'Write the number in descending order: 
-                <p>' . implode("", $userOutput) . '</p>
-                <input type="text" name="answer-lvl4">';
-                $rightAnswer = implode(", ", $rightAnswer);
-                break;
-            case 'level5':
-                echo "Level 5";
-                break;
-            case 'level6':
-                echo "Level 6";
-                break;
-            default:
-                echo "No level";
-                break;
-        }
-
-        echo '<input type="hidden" name="right-answer" value="' . $rightAnswer . '">
-              <input type="submit" value="Submit" name="submit"></form>';
-    }
 }
