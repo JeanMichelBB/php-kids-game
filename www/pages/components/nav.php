@@ -4,8 +4,8 @@
     function createNav()
     { 
         $username = $_SESSION['username'];
-        $life = $_SESSION['life'];
-        $Progress = $_SESSION['Progress'];
+        $lives = $_SESSION['life'];
+        $progress = $_SESSION['Progress'];
          // TODO - Change this to TRUE when the user is logged in
         if (isset($username)) {
             echo <<<EOT
@@ -21,11 +21,11 @@
                     <a class="nav-link" href="../pages/registration.php">Registration</a>
                     <a class="nav-link" href="../pages/history.php">History</a>
                     <a class="nav-link" href="../pages/forgot-password.php">Forgot-password</a>
-                    <div class="nav-link ">Welcome, $username</div>
-                </div>
-                <div class="navbar-nav ml-auto">
-                <div class="nav-link">Life: $life</div>
-                <div class="nav-link">Progress: $Progress%</div>
+                    </div>
+                    <div class="navbar-nav ml-auto">
+                    <div class="nav-link ">$username</div>
+                <div class="nav-link">Life: $lives</div>
+                <div class="nav-link">Progress: $progress%</div>
                 <form action="../helpers/auth.php" method="POST">
                     <button type="submit" class="btn btn-primary" name="logout">Logout</button>
                 </form>
