@@ -8,7 +8,8 @@
     include_once('./components/components.php');
     include_once('../game/Game.php');
 
-    $livesUsed = 0;
+    $livesUsed = isset($_SESSION['livesUsed']) ? $_SESSION['livesUsed'] : 0;
+    $isGameOver = isset($_SESSION['game_fail']) || $livesUsed >= 6 ? true : false;
     const MAX_LIVES = 6;
     const MAX_LEVEL = 6;
     $userOutput;
@@ -54,8 +55,11 @@
     if(isset($_POST['submit-answer'])) {
         $userInput = $_POST['answer'];
         $rightAnswer = explode(",",$_POST['right-answer']);
-        if ($livesUsed == MAX_LIVES) {
-            header('Location: ../pages/gameover.php');
+        if ($isGameOver) {
+            $livesUsed = 0;
+            $_SESSION['livesUsed'] = $livesUsed;
+            $_SESSION['game_fail'] = 'Game over!';
+            header('Location: ../pages/gameOver.php');
         }
         if ($game->checkAnswer($userInput, $rightAnswer)) {
             $_SESSION['level_success'] = 'You have successfully completed level ' . $level . '!';
@@ -67,18 +71,12 @@
             header('Location: level.php');
         } else {
             $livesUsed++;
-            $_SESSION['livesUsed'] = $livesUsed;
+            $_SESSION['livesUsed']++;
             $_SESSION['level_fail'] = 'You have failed level ' . $level . '!';
-            if ($livesUsed == MAX_LIVES) {
-                $livesUsed = 0;
-                $_SESSION['livesUsed'] = $livesUsed;
-                $_SESSION['game_fail'] = 'Game over!';
-                header('Location: ../pages/gameover.php');
-            }
         }
     }
 
-    if(isset($_POST['next-level'])){
+    if(isset($_POST['next-level']) && $level < MAX_LEVEL){
         $level++;
         $_SESSION['level'] = $level;
         $_SESSION['level_fail'] = '';
@@ -86,10 +84,15 @@
         header('Location: level.php');
     }
 
-    if(isset($_POST['try-again'])) {
+    if(isset($_POST['try-again']) && !$isGameOver) {
         $_SESSION['level_fail'] = '';
         $_SESSION['level_success'] = '';
         header('Refresh:0');
+    } elseif (isset($_POST['try-again']) && $livesUsed >= MAX_LIVES) {
+        $_SESSION['level_fail'] = '';
+        $_SESSION['level_success'] = '';
+        $_SESSION['game_fail'] = 'Game over!';
+        header('Location: ../pages/gameOver.php');
     }
 
 ?>
@@ -157,9 +160,9 @@
                 }
                 ?>
                 <div class="card">
-                    <div class="card-header">
-                        <b>Level <?php echo $level; ?></b>: <?php echo $game->message; ?>
-                        <p>Lives: <?php echo MAX_LIVES - $_SESSION['livesUsed']; ?></p>
+                    <div class="card-header d-flex justify-content-between">
+                        <p class="mb-0"><b>Level <?php echo $level; ?></b>: <?php echo $game->message; ?></p>
+                        <p class="mb-0"><b>Lives:</b> <?php echo MAX_LIVES - $livesUsed . "/" . MAX_LIVES; ?></p>
                     </div>
                     <div class="card-body px-5">
                         <form action="level.php" method="post">
@@ -179,9 +182,8 @@
                                     ?>
                                 </div>
                             </div>
-                            <button type="submit" class="btn btn-primary" name="submit-answer">Submit</button>
+                            <button type="submit" class="btn btn-primary" <?php echo !$game->output ? 'disabled' : ''; ?> name="submit-answer">Submit</button>
                             <input type="hidden" name="right-answer" value="<?php echo implode(",",$game->answer); ?>">
-                            <input type="hidden" name="question" value="<?php echo implode(",",$game->output); ?>">
                         </form>
 
                         <div class="mt-3">
@@ -198,6 +200,4 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
 </body>
-
 </html>
-
