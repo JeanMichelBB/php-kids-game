@@ -6,6 +6,8 @@ if (isset($_POST['connect'])) {
     $password = $_POST['password'];
     if (checkCredentials($username, $password)) {
         header('Location: ../pages/level.php');
+        session_start();
+        $_SESSION['username'] = $username;
     } else {
         $error_message = "Sorry, you entered a wrong username or password!";
         header("Location: ../pages/login.php?error=" . urlencode($error_message));
@@ -20,6 +22,7 @@ function checkCredentials($username, $password){
         return false;
     }
 }
+
 
 if (isset($_POST['modify'])) {
     $existingUsername = $_POST['existing-username'];
