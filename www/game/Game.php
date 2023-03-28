@@ -3,7 +3,7 @@ session_start();
 class Game
 {
     public $output = [];
-    public $answer;
+    public $answer = [];
 
     public $message = '';
 

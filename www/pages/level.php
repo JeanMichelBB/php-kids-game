@@ -129,24 +129,18 @@
             <div class="col-md-6">
             <?php
                 if ($failMessage) {
-                    echo "<div class='alert alert-dismissible alert-danger fade show mt-3'>
+                    echo "<div class='alert alert-dismissible alert-danger mt-3 d-flex'>
                                 $failMessage
                                 <form action=\"level.php\" method=\"post\">
                                     <button type=\"submit\" class=\"level-btn alert-link\" name=\"try-again\">Try again</button>
                                 </form>
-                                <button type=\"button\" class=\"close\" data-dismiss=\"alert\" aria-label=\"Close\">
-                                    <span aria-hidden=\"true\">&times;</span>
-                                </button>
                             </div>";
                 } if($successMessage) {
-                    echo "<div class='alert alert-dismissible alert-success fade show mt-3'>
+                    echo "<div class='alert alert-dismissible alert-success mt-3 d-flex'>
                                 $successMessage
                                 <form action=\"level.php\" method=\"post\">
                                     <input type=\"submit\" class=\"level-btn alert-link\" name=\"next-level\" value='Next Level' />
                                 </form>
-                                <button type=\"button\" class=\"close\" data-dismiss=\"alert\" aria-label=\"Close\">
-                                    <span aria-hidden=\"true\">&times;</span>
-                                </button>
                             </div>";
                 }
                 ?>
