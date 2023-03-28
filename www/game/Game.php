@@ -7,6 +7,8 @@ class Game
 
     public $message = '';
 
+    public $inputMaxLength = 1;
+
     public function __construct()
     {
         if (!isset($_SESSION['level'])) {
@@ -18,6 +20,7 @@ class Game
         $_SESSION['level'] = 1;
         $letters = $this->generateSetOfRandomLetters(6);
         $rightAnswer = $this->createCorrectAnswer($letters, 'asc');
+        $this->inputMaxLength = 1;
         $this->output = $letters;
         $this->answer = $rightAnswer;
         $this->message = 'Write the letters in ascending order';
@@ -28,6 +31,7 @@ class Game
         $_SESSION['level'] = 2;
         $letters = $this->generateSetOfRandomLetters(6);
         $rightAnswer = $this->createCorrectAnswer($letters, 'desc');
+        $this->inputMaxLength = 1;
         $this->output = $letters;
         $this->answer = $rightAnswer;
         $this->message = 'Write the letters in descending order';

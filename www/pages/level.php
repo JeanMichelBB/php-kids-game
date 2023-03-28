@@ -7,22 +7,16 @@
 
     include_once('./components/components.php');
     include_once('../game/Game.php');
-
-    $livesUsed = isset($_SESSION['livesUsed']) ? $_SESSION['livesUsed'] : 0;
-    $isGameOver = isset($_SESSION['game_fail']) || $livesUsed >= 6 ? true : false;
+    
     const MAX_LIVES = 6;
     const MAX_LEVEL = 6;
-    $userOutput;
-    $rightAnswer;
-    $message;
-    $inputMaxLength = 1;
+    
+    $livesUsed = isset($_SESSION['livesUsed']) ? $_SESSION['livesUsed'] : 0;
+    $isGameOver = isset($_SESSION['game_fail']) || $livesUsed >= 6 ? true : false;
+    $level = isset($_SESSION['level']) ? $_SESSION['level'] : 1;
+    
     $game = new Game();
 
-    if (isset($_SESSION['level'])) {
-        $level = $_SESSION['level'];
-    } else {
-        $level = 1;
-    }
     if(!isset($_POST['submit-answer'])) {
         switch ($level) {
         case 1:
@@ -33,10 +27,8 @@
             break;
         case 3:
             $game->level1();
-            $inputMaxLength = 2;
             break;
         case 4:
-            $inputMaxLength = 2;
             $game->level2();
             break;
         case 5: 
@@ -44,7 +36,6 @@
             $game->level1();
             break;
         case 6:
-            $inputMaxLength = 2;
             $game->level2();
             break;
         default:
@@ -177,7 +168,7 @@
                                 <div class="form-row justify-content-around">
                                     <?php
                                     for($i = 0; $i < count($game->answer); $i++) {
-                                        echo "<input required maxlength=\"$inputMaxLength\" type='text' class='form-control text-center col-md-1' name='answer[]' >";
+                                        echo "<input required maxlength=\"$game->inputMaxLength\" type='text' class='form-control text-center col-md-1' name='answer[]' >";
                                     }
                                     ?>
                                 </div>
