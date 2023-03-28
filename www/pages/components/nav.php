@@ -6,7 +6,6 @@
         $username = $_SESSION['username'];
         $lives = $_SESSION['life'];
         $progress = $_SESSION['Progress'];
-        // TODO - Change this to TRUE when the user is logged in
         if (isset($username)) {
             echo <<<EOT
 

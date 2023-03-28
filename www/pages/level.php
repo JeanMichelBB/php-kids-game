@@ -1,5 +1,5 @@
 <?php
-
+    session_start();
     include('./components/components.php');
 ?>
 <!DOCTYPE html>
@@ -15,7 +15,7 @@
 
 <body>
     <?php 
-        $isLoggedIn = TRUE; // TODO - Change this to TRUE when the user is logged in
+        $isLoggedIn = isset($_SESSION['username']);
         if (!$isLoggedIn) {
             header('Location: login.php');
         }
