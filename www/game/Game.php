@@ -1,23 +1,41 @@
 <?php
-
+session_start();
 class Game
 {
+    public $output = '';
+    public $answer;
+
+    public $message = '';
+
+    public function __construct()
+    {
+        if (!isset($_SESSION['level'])) {
+            $_SESSION['level'] = 1;
+        }
+    }
     public function level1()
     {
+        $_SESSION['level'] = 1;
         $letters = $this->generateSetOfRandomLetters(6);
         $rightAnswer = $this->createCorrectAnswer($letters, 'asc');
-        $this->displayForm('level1', $letters, $rightAnswer);
+        $this->output = $letters;
+        $this->answer = $rightAnswer;
+        $this->message = 'Write the letters in ascending order';
     }
 
     public function level2()
     {
+        $_SESSION['level'] = 2;
         $letters = $this->generateSetOfRandomLetters(6);
         $rightAnswer = $this->createCorrectAnswer($letters, 'desc');
-        $this->displayForm('level2', $letters, $rightAnswer);
+        $this->output = $letters;
+        $this->answer = $rightAnswer;
+        $this->message = 'Write the letters in descending order';
     }
 
     public function level3()
     {
+        $_SESSION['level'] = 3;
         $numbers = $this->createArrayOfNum(); 
         $rightAnswer = $this->createCorrectAnswer($numbers, 'asc');  
         $this->displayForm('level3', $numbers, $rightAnswer);
@@ -25,6 +43,7 @@ class Game
 
     public function level4()
     {
+        $_SESSION['level'] = 4;
         $numbers = $this->createArrayOfNum(); 
         $rightAnswer = $this->createCorrectAnswer($numbers, 'asc');  
         $this->displayForm('level4', $numbers, $rightAnswer);
@@ -68,7 +87,7 @@ class Game
         }
     }
 
-    public function createCorrectAnswer($original, $order)
+    public function createCorrectAnswer($original, $order) : array
     {
         if ($order === 'asc') {
             sort($original);
