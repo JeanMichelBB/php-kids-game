@@ -24,15 +24,15 @@ if (isset($_SESSION['username'])) {
 <body>
     <?php
     if (isset($_SESSION['reg_error'])) {
-        // unset($_SESSION['reg_success'][$successMessage]);
+        // unset($_SESSION['reg_success'][$successMessage]); // TODO: Fix this
         $errorMessage = $_SESSION['reg_error'];
     }
     if(isset($_SESSION['reg_success'])) {
-        unset($_SESSION['reg_error'][$errorMessage]);
+        // unset($_SESSION['reg_error'][$errorMessage]); TODO: Fix this
         $successMessage = $_SESSION['reg_success'];
     }
-    createHeader();
-    createNav();
+    echo createHeader();
+    echo createNav();
     ?>
     <div class="container mt-5">
         <div class="row justify-content-center">
@@ -91,7 +91,7 @@ if (isset($_SESSION['username'])) {
             </div>
         </div>
     </div>
-    <?php createFooter(); ?>
+    <?php echo createFooter(); ?>
     <!-- Include Bootstrap JS -->
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>

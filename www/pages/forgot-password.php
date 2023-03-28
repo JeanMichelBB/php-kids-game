@@ -24,8 +24,8 @@
             $_SESSION['login_error'] = "";
             $successMessage = $_SESSION['update_success'];
         }
-        createHeader();
-        createNav();
+        echo createHeader();
+        echo createNav();
     ?>
     <div class="container mt-5">
         <div class="row justify-content-center">
@@ -77,7 +77,7 @@
             </div>
         </div>
     </div>
-    <?php createFooter(); ?>
+    <?php echo createFooter(); ?>
     <!-- Include Bootstrap JS -->
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>

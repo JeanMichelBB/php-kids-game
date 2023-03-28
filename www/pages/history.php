@@ -16,8 +16,8 @@ include_once('../db/db.php');
 
 <body>
     <?php
-    createHeader();
-    createNav();
+    echo createHeader();
+    echo createNav();
     ?>
     <div class="container table mt-5">
         <div class="row justify-content-center">
@@ -72,7 +72,7 @@ include_once('../db/db.php');
         </div>
     </div>
     </div>
-    <?php createFooter(); ?>
+    <?php echo createFooter(); ?>
     <!-- Include Bootstrap JS -->
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
