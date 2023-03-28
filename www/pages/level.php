@@ -127,6 +127,10 @@
             $_SESSION['level_fail'] = '';
             $successMessage = $_SESSION['level_success'];
         }
+        $isLoggedIn = isset($_SESSION['username']);
+        if (!$isLoggedIn) {
+            header('Location: login.php');
+        }
         createHeader();
         createNav();
     ?>

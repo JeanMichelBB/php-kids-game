@@ -6,6 +6,7 @@ if (isset($_POST['connect'])) {
     $username = $_POST['username'];
     $password = $_POST['password'];
     if (checkCredentials($username, $password)) {
+        $_SESSION['username'] = $username;
         header('Location: ../pages/level.php');
         $_SESSION['username'] = $username;
         unset($_SESSION['login_error']);
@@ -14,6 +15,10 @@ if (isset($_POST['connect'])) {
         $_SESSION['login_error'] = $error_message;
         header("Location: ../pages/login.php");
     }
+}
+if (isset($_POST['logout'])) {
+    session_destroy();
+    header('Location: ../pages/login.php');
 }
 
 function checkCredentials($username, $password){
@@ -117,4 +122,6 @@ function createAccount($username, $password, $firstName, $lastName){
     } else {
         return false;
     }
+
+
 }
