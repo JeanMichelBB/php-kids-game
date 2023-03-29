@@ -38,7 +38,8 @@ if(!isset($_POST['submit-answer'])) {
             $game->level6();
             break;
         default:
-            echo "Invalid level number.";
+            $level = 1;
+            $game->level1();
             break;
     }
 }
