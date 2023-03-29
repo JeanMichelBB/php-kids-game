@@ -101,6 +101,13 @@
         header('Refresh:0');
     }
 
+    if (isset($_SESSION['level_fail'])) {
+        $failMessage = $_SESSION['level_fail'];
+    }
+    if(isset($_SESSION['level_success'])) {
+        $successMessage = $_SESSION['level_success'];
+    }
+
 ?>
 <!DOCTYPE html>
 <html>
@@ -119,22 +126,22 @@
             text-decoration: underline;
             cursor: pointer;
         }
+
+        .vh-100 {
+            height: 100vh;
+        }
     </style>
     <title>Level <?php echo $level; ?></title>
 </head>
 
-<body>
-    <?php 
-        if (isset($_SESSION['level_fail'])) {
-            $failMessage = $_SESSION['level_fail'];
-        }
-        if(isset($_SESSION['level_success'])) {
-            $successMessage = $_SESSION['level_success'];
-        }
-        echo createHeader();
-        echo createNav();
-    ?>
-    <div class="container mt-5">
+<body class="vh-100 d-flex flex-column justify-content-between">
+    <header>
+        <?php 
+            echo createHeader();
+            echo createNav();
+        ?>
+    </header>
+    <article class="container">
         <div class="row justify-content-center">
             <div class="col-md-6">
             <?php
@@ -195,7 +202,7 @@
                 </div>
             </div>
         </div>
-    </div>
+    </article>
     <?php echo createFooter(); ?>
     <!-- Include Bootstrap JS -->
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>

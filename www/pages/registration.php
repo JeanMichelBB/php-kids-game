@@ -1,14 +1,25 @@
 <?php
-session_start();
-$_SESSION['login_error'] = "";
-$_SESSION['login_success'] = "";
-$_SESSION['update_error'] = "";
-$_SESSION['update_success'] = "";
+    session_start();
+    
+    include('./components/components.php');
+    
+    unset($_SESSION['login_error']);
+    unset($_SESSION['login_success']);
+    unset($_SESSION['update_error']);
+    unset($_SESSION['update_success']);
 
-include('./components/components.php');
-if (isset($_SESSION['username'])) {
-    header('Location: ../pages/level.php');
-}
+    if (isset($_SESSION['username'])) {
+        header('Location: ../pages/level.php');
+    }
+
+    if (isset($_SESSION['reg_error'])) {
+        unset($_SESSION['reg_success']);
+        $errorMessage = $_SESSION['reg_error'];
+    }
+    if(isset($_SESSION['reg_success'])) {
+        unset($_SESSION['reg_error']);
+        $successMessage = $_SESSION['reg_success'];
+    }
 ?>
 <!DOCTYPE html>
 <html>
@@ -19,22 +30,21 @@ if (isset($_SESSION['username'])) {
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- Include Bootstrap CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+    <style>
+        .vh-100 {
+            height: 100vh;
+        }
+    </style>
 </head>
 
-<body>
-    <?php
-    if (isset($_SESSION['reg_error'])) {
-        // unset($_SESSION['reg_success'][$successMessage]); // TODO: Fix this
-        $errorMessage = $_SESSION['reg_error'];
-    }
-    if(isset($_SESSION['reg_success'])) {
-        // unset($_SESSION['reg_error'][$errorMessage]); TODO: Fix this
-        $successMessage = $_SESSION['reg_success'];
-    }
-    echo createHeader();
-    echo createNav();
-    ?>
-    <div class="container mt-5">
+<body class="vh-100 d-flex flex-column justify-content-between">
+    <header>
+        <?php
+        echo createHeader();
+        echo createNav();
+        ?>
+    </header>
+    <article class="container">
         <div class="row justify-content-center">
             <div class="col-md-6">
                 <?php
@@ -90,7 +100,7 @@ if (isset($_SESSION['username'])) {
 
             </div>
         </div>
-    </div>
+    </article>
     <?php echo createFooter(); ?>
     <!-- Include Bootstrap JS -->
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>

@@ -1,7 +1,6 @@
 <?php
 function createHeader() {
-    return '<header>
-        <div class="container">
+    return '<div class="container">
             <div class="row">
                 <div class="col-md-12">
                     <div class="d-flex align-items-center flex-row">
@@ -14,6 +13,5 @@ function createHeader() {
                     </div>
                 </div>
             </div>
-        </div>
-    </header>';
+        </div>';
 }

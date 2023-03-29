@@ -1,14 +1,17 @@
 <?php
-session_start();
-$_SESSION['update_error'] = "";
-$_SESSION['update_success'] = "";
-$_SESSION['reg_error'] = "";
-$_SESSION['reg_success'] = "";
+    session_start();
+    $_SESSION['update_error'] = "";
+    $_SESSION['update_success'] = "";
+    $_SESSION['reg_error'] = "";
+    $_SESSION['reg_success'] = "";
 
-include('./components/components.php');
-if (isset($_SESSION['username'])) {
-    header('Location: ../pages/level.php');
-}
+    include('./components/components.php');
+    if (isset($_SESSION['username'])) {
+        header('Location: ../pages/level.php');
+    }
+    if (isset($_SESSION['login_error'])) {
+        $errorMessage = $_SESSION['login_error'];
+    }
 ?>
 <!DOCTYPE html>
 <html>
@@ -19,17 +22,21 @@ if (isset($_SESSION['username'])) {
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- Include Bootstrap CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+    <style>
+        .vh-100 {
+            height: 100vh;
+        }
+    </style>
 </head>
 
-<body>
-    <?php
-    if (isset($_SESSION['login_error'])) {
-        $errorMessage = $_SESSION['login_error'];
-    }
-    echo createHeader();
-    echo createNav();
-    ?>
-    <div class="container mt-5">
+<body class="vh-100 d-flex flex-column justify-content-between">
+    <header>
+        <?php
+            echo createHeader();
+            echo createNav();
+        ?>
+    </header>
+    <article class="container mt-5">
         <div class="row justify-content-center">
             <div class="col-md-6">
                 <?php
@@ -71,7 +78,7 @@ if (isset($_SESSION['username'])) {
                 </div>
             </div>
         </div>
-    </div>
+    </article>
     <?php echo createFooter(); ?>
     <!-- Include Bootstrap JS -->
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
