@@ -12,14 +12,21 @@ include_once('../db/db.php');
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- Include Bootstrap CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+    <style>
+        .vh-100 {
+            height: 100vh;
+        }
+    </style>
 </head>
 
-<body>
-    <?php
-    echo createHeader();
-    echo createNav();
-    ?>
-    <div class="container table mt-5">
+<body class="vh-100 d-flex flex-column justify-content-between">
+    <header>
+        <?php
+        echo createHeader();
+        echo createNav();
+        ?>
+    </header>
+    <article class="container table mt-5">
         <div class="row justify-content-center">
             <div class="col-md-6">
                 <div class="card">
@@ -70,7 +77,7 @@ include_once('../db/db.php');
                 </div>
             </div>
         </div>
-    </div>
+    </article>
     </div>
     <?php echo createFooter(); ?>
     <!-- Include Bootstrap JS -->
