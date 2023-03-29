@@ -22,6 +22,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- Include Bootstrap CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+    
     <style>
         .level-btn {
             background-color: transparent;
@@ -31,15 +32,20 @@
             text-decoration: underline;
             cursor: pointer;
         }
+        .vh-100 {
+            height: 100vh;
+        }
     </style>
     <title>Game Over</title>
 </head>
-<body>
-    <?php 
-        echo createHeader();
-        echo createNav();
-    ?>
-    <div class="container mt-5">
+<body class="vh-100 d-flex flex-column justify-content-between">
+    <header>
+        <?php 
+            echo createHeader();
+            echo createNav();
+        ?>
+    </header>
+    <article class="container mt-5">
         <div class="row justify-content-center">
             <div class="col-md-6">
 
@@ -63,7 +69,7 @@
                 </div>
             </div>
         </div>
-    </div>
+    </article>
     <?php echo createFooter(); ?>
     <!-- Include Bootstrap JS -->
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>

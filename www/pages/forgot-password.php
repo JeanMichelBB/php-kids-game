@@ -1,6 +1,14 @@
 <?php
     session_start();
     include('./components/components.php');
+    if (isset($_SESSION['update_error'])) {
+        $errorMessage = $_SESSION['update_error'];
+    }
+    if(isset($_SESSION['update_success'])) {
+        $_SESSION['update_error'] = "";
+        $_SESSION['login_error'] = "";
+        $successMessage = $_SESSION['update_success'];
+    }
 ?>
 <!DOCTYPE html>
 <html>
@@ -11,23 +19,21 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- Include Bootstrap CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
+    <style>
+        .vh-100 {
+            height: 100vh;
+        }
+    </style>
 </head>
 
-<body>
-    <?php
-
-        if (isset($_SESSION['update_error'])) {
-            $errorMessage = $_SESSION['update_error'];
-        }
-        if(isset($_SESSION['update_success'])) {
-            $_SESSION['update_error'] = "";
-            $_SESSION['login_error'] = "";
-            $successMessage = $_SESSION['update_success'];
-        }
-        echo createHeader();
-        echo createNav();
-    ?>
-    <div class="container mt-5">
+<body class="vh-100 d-flex flex-column justify-content-between">
+    <header>
+        <?php
+            echo createHeader();
+            echo createNav();
+        ?>
+    </header>
+    <article class="container mt-5">
         <div class="row justify-content-center">
             <div class="col-md-6">
                 <?php
@@ -76,7 +82,7 @@
                 </div>
             </div>
         </div>
-    </div>
+    </article>
     <?php echo createFooter(); ?>
     <!-- Include Bootstrap JS -->
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
