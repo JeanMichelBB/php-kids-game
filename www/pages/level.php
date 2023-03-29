@@ -91,7 +91,6 @@
 <html>
 
 <head>
-    <title>Login Page</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- Include Bootstrap CSS -->
@@ -106,7 +105,7 @@
             cursor: pointer;
         }
     </style>
-    <title>Level</title>
+    <title>Level <?php echo $level; ?></title>
 </head>
 
 <body>
