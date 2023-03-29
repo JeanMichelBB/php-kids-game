@@ -31,7 +31,7 @@ if(!isset($_POST['submit-answer'])) {
         case 4:
             $game->level4();
             break;
-        case 5:
+        case 5: 
             $game->level5();
             break;
         case 6:
@@ -210,10 +210,10 @@ if(isset($_POST['give-up'])) {
         const submitBt = document.querySelector('.submitBt');
         let allFilled = true;
         const lastInput = inputs[inputs.length - 1];
-
+        const maxlength = <?php echo $game->inputMaxLength; ?>;
         inputs.forEach(input => {
             input.addEventListener('input', () => {
-                if (input.value.length === 1) {
+                if (input.value.length === maxlength) {
                     input.nextElementSibling.focus();
                 }
                 if (input.value.length === 0) {

@@ -82,6 +82,7 @@ class Game
         for ($i = 0; $i < 6; $i++) {
             do {
                 $number = rand(0, 100);
+                $number = str_pad($number, 2, '0', STR_PAD_LEFT); // add leading zeros
             } while (in_array($number, $numbers));
             $numbers[$i] = $number;
         }
