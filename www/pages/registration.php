@@ -44,7 +44,7 @@
         echo createNav();
         ?>
     </header>
-    <article class="container">
+    <article class="container my-4">
         <div class="row justify-content-center">
             <div class="col-md-6">
                 <?php
