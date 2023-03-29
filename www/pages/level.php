@@ -184,14 +184,14 @@
                                 <label for="inputText" class="form-row justify-content-around">
                                     <?php
                                     foreach ($game->output as $card) {
-                                        echo '<span class="rounded font-weight-bold border p-2 bg-light text-center myCard" >' . $card . "</span>";
+                                        echo '<span class="rounded font-weight-bold border p-2 bg-light d-flex align-items-center justify-content-center myCard" >' . $card . "</span>";
                                     }
                                     ?>
                                 </label>
                                 <div class="form-row justify-content-around">
                                     <?php
                                     for ($i = 0; $i < count($game->answer); $i++) {
-                                        echo "<input autofocus maxlength=\"$game->inputMaxLength\" type='text' class='form-control text-center col-md-1 myCard answer' name='answer[]' >";
+                                        echo "<input autofocus maxlength=\"$game->inputMaxLength\" type='text' class='form-control text-center col-md-1.5 myCard answer' name='answer[]' >";
                                     }
                                     ?>
                                 </div>
