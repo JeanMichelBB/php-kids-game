@@ -1,12 +1,17 @@
 <?php
     session_start();
+    unset($_SESSION['reg_error']);
+    unset($_SESSION['reg_success']);
+    unset($_SESSION['login_error']);
+    unset($_SESSION['login_success']);
+    
     include('./components/components.php');
+    
     if (isset($_SESSION['update_error'])) {
         $errorMessage = $_SESSION['update_error'];
     }
     if(isset($_SESSION['update_success'])) {
-        $_SESSION['update_error'] = "";
-        $_SESSION['login_error'] = "";
+        unset($_SESSION['update_error']);    
         $successMessage = $_SESSION['update_success'];
     }
 ?>
@@ -33,7 +38,7 @@
             echo createNav();
         ?>
     </header>
-    <article class="container mt-5">
+    <article class="container">
         <div class="row justify-content-center">
             <div class="col-md-6">
                 <?php
