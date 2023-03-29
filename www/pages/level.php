@@ -160,6 +160,12 @@
                         <p class="mb-0"><b>Lives:</b> <?php echo MAX_LIVES - $livesUsed . "/" . MAX_LIVES; ?></p>
                     </div>
                     <div class="card-body px-5">
+                        <div class="progress mb-4">
+                            <?php
+                            $progress = ($level - 1) * (100 / MAX_LEVEL);
+                            echo "<div class='progress-bar' role='progressbar' style='width: $progress%' aria-valuenow='$progress' aria-valuemin='0' aria-valuemax='100'></div>";
+                            ?>
+                        </div>
                         <form action="level.php" method="post">
                             <div class="form-group">
                                 <label for="inputText" class="form-row justify-content-around">
@@ -171,14 +177,15 @@
                                 </label>
                                 <div class="form-row justify-content-around">
                                     <?php
-                                    for($i = 0; $i < count($game->answer); $i++) {
-                                        echo "<input required maxlength=\"$game->inputMaxLength\" type='text' class='form-control text-center col-md-1' name='answer[]' >";
+                                    for ($i = 0; $i < count($game->answer); $i++) {
+                                        echo "<input maxlength=\"$game->inputMaxLength\" type='text' class='form-control text-center col-md-1 myCard answer' name='answer[]' >";
                                     }
                                     ?>
                                 </div>
                             </div>
-                            <button type="submit" class="btn btn-primary" <?php echo !$game->output ? 'disabled' : ''; ?> name="submit-answer">Submit</button>
-                            <input type="hidden" name="right-answer" value="<?php echo implode(",",$game->answer); ?>">
+                            <button type="submit" disabled class="btn btn-primary submitBt" <?php echo !$game->output ? 'disabled' : ''; ?> name="submit-answer">Submit</button>
+                            <button type="submit" class="btn btn-danger float-right" name="give-up">Give-up</button>
+                            <input type="hidden" name="right-answer" value="<?php echo implode(",", $game->answer); ?>">
                         </form>
 
                         <div class="mt-3">
@@ -194,5 +201,18 @@
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+    <script>
+        const inputs = document.querySelectorAll('.answer');
+        const submitBt = document.querySelector('.submitBt');
+        inputs.forEach(input => {
+            input.addEventListener('input', () => {
+                if (inputs[0].value.length > 0 && inputs[1].value.length > 0 && inputs[2].value.length > 0 && inputs[3].value.length > 0 && inputs[4].value.length > 0 && inputs[5].value.length > 0) {
+                    submitBt.disabled = false;
+                } else {
+                    submitBt.disabled = true;
+                }
+            });
+        });
+    </script>
 </body>
 </html>
