@@ -32,7 +32,6 @@
             $game->level2();
             break;
         case 5: 
-            $inputMaxLength = 1;
             $game->level1();
             break;
         case 6:

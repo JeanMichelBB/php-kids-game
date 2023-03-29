@@ -5,8 +5,8 @@
     }
     include_once('./components/components.php');
     include_once('../game/Game.php');
-    $_SESSION['livesUsed'] = '';
-    $_SESSION['level'] = '';
+    $_SESSION['livesUsed'] = 0;
+    $_SESSION['level'] = 1;
 ?>
 <!DOCTYPE html>
 <html>
