@@ -53,9 +53,9 @@
         }
         if ($game->checkAnswer($userInput, $rightAnswer)) {
             $_SESSION['level_success'] = 'You have successfully completed level ' . $level . '!';
-            $_SESSION['level_fail'] = '';
+            unset($_SESSION['level_fail']);
             if ($level == MAX_LEVEL) {
-                $_SESSION['level_success'] = '';
+                unset($_SESSION['level_success']);
                 $_SESSION['game_success'] = 'You have successfully completed the game!';
             }
             header('Location: level.php');
@@ -69,18 +69,18 @@
     if(isset($_POST['next-level']) && $level < MAX_LEVEL){
         $level++;
         $_SESSION['level'] = $level;
-        $_SESSION['level_fail'] = '';
-        $_SESSION['level_success'] = '';
+        unset($_SESSION['level_fail']);
+        unset($_SESSION['level_success']);
         header('Location: level.php');
     }
 
     if(isset($_POST['try-again']) && !$isGameOver) {
-        $_SESSION['level_fail'] = '';
-        $_SESSION['level_success'] = '';
+        unset($_SESSION['level_fail']);
+        unset($_SESSION['level_success']);
         header('Refresh:0');
     } elseif (isset($_POST['try-again']) && $livesUsed >= MAX_LIVES) {
-        $_SESSION['level_fail'] = '';
-        $_SESSION['level_success'] = '';
+        unset($_SESSION['level_fail']);
+        unset($_SESSION['level_success']);
         $_SESSION['game_fail'] = 'Game over!';
         header('Location: ../pages/gameOver.php');
     }
@@ -116,7 +116,7 @@
             $failMessage = $_SESSION['level_fail'];
         }
         if(isset($_SESSION['level_success'])) {
-            $_SESSION['level_fail'] = '';
+            unset($_SESSION['level_fail']);
             $successMessage = $_SESSION['level_success'];
         }
         echo createHeader();
