@@ -1,5 +1,7 @@
 <?php
     session_start();
+    unset($_SESSION['game_fail']);
+    unset($_SESSION['game_success']);
 
     if(!isset($_SESSION['username'])) {
         header('Location: ../pages/login.php');
@@ -7,15 +9,17 @@
 
     include_once('./components/components.php');
     include_once('../game/Game.php');
+    include_once('../db/db.php');
+
     
     const MAX_LIVES = 6;
     const MAX_LEVEL = 6;
     
     $livesUsed = isset($_SESSION['livesUsed']) ? $_SESSION['livesUsed'] : 0;
-    $isGameOver = isset($_SESSION['game_fail']) || $livesUsed >= 6 ? true : false;
     $level = isset($_SESSION['level']) ? $_SESSION['level'] : 1;
     
     $game = new Game();
+    $insert = new InsertRowToTable();
 
     if(!isset($_POST['submit-answer'])) {
         switch ($level) {
@@ -38,51 +42,63 @@
             $game->level2();
             break;
         default:
-            echo "Invalid level number.";
+            $level = 1;
+            $game->level1();
             break;
         }
     }
     if(isset($_POST['submit-answer'])) {
         $userInput = $_POST['answer'];
         $rightAnswer = explode(",",$_POST['right-answer']);
-        if ($isGameOver) {
-            $livesUsed = 0;
-            $_SESSION['livesUsed'] = $livesUsed;
-            $_SESSION['game_fail'] = 'Game over!';
-            header('Location: ../pages/gameOver.php');
-        }
+
         if ($game->checkAnswer($userInput, $rightAnswer)) {
-            $_SESSION['level_success'] = 'You have successfully completed level ' . $level . '!';
-            unset($_SESSION['level_fail']);
             if ($level == MAX_LEVEL) {
                 unset($_SESSION['level_success']);
+                unset($_SESSION['level_fail']);
+
                 $_SESSION['game_success'] = 'You have successfully completed the game!';
+                $insert->insertScore('success', $livesUsed, $_SESSION['username']);
+
+                header('Location: ../pages/gameOver.php');
+            } else {
+                $_SESSION['level_success'] = 'You have successfully completed level ' . $level . '!';
+
+                unset($_SESSION['level_fail']);
+                header('Location: level.php');
             }
-            header('Location: level.php');
         } else {
             $livesUsed++;
             $_SESSION['livesUsed']++;
-            $_SESSION['level_fail'] = 'You have failed level ' . $level . '!';
+
+            if ($livesUsed >= MAX_LIVES) {
+                unset($_SESSION['level_fail']);
+                unset($_SESSION['level_success']);
+
+                $_SESSION['game_fail'] = 'You have failed the game!';
+                $insert->insertScore('failure', $livesUsed, $_SESSION['username']);
+                $livesUsed = 0;
+                $_SESSION['livesUsed'] = $livesUsed;
+
+                header('Location: ../pages/gameOver.php');
+            } else {
+                unset($_SESSION['level_success']);
+                $_SESSION['level_fail'] = 'You have failed level ' . $level . '!';
+            }
         }
     }
 
-    if(isset($_POST['next-level']) && $level < MAX_LEVEL){
+    if(isset($_POST['next-level'])){
         $level++;
         $_SESSION['level'] = $level;
         unset($_SESSION['level_fail']);
         unset($_SESSION['level_success']);
         header('Location: level.php');
-    }
+    } 
 
-    if(isset($_POST['try-again']) && !$isGameOver) {
+    if(isset($_POST['try-again'])) {
         unset($_SESSION['level_fail']);
         unset($_SESSION['level_success']);
         header('Refresh:0');
-    } elseif (isset($_POST['try-again']) && $livesUsed >= MAX_LIVES) {
-        unset($_SESSION['level_fail']);
-        unset($_SESSION['level_success']);
-        $_SESSION['game_fail'] = 'Game over!';
-        header('Location: ../pages/gameOver.php');
     }
 
 ?>
@@ -112,11 +128,7 @@
         if (isset($_SESSION['level_fail'])) {
             $failMessage = $_SESSION['level_fail'];
         }
-        if (isset($_SESSION['game_fail'])) {
-            $failMessage = $_SESSION['level_fail'];
-        }
         if(isset($_SESSION['level_success'])) {
-            unset($_SESSION['level_fail']);
             $successMessage = $_SESSION['level_success'];
         }
         echo createHeader();

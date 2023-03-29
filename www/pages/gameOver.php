@@ -3,11 +3,16 @@
     if(!isset($_SESSION['username'])) {
         header('Location: ../pages/login.php');
     }
+    if(!isset($_SESSION['game_fail']) && !isset($_SESSION['game_success'])) {
+        header('Location: ../pages/level.php');
+    }
     include_once('./components/components.php');
     include_once('../game/Game.php');
     unset($_SESSION['livesUsed']);
     unset($_SESSION['level']);
-    unset($_SESSION['game_fail']);
+
+    $successMessage = isset($_SESSION['game_success']) ? $_SESSION['game_success'] : '';
+    $failMessage = isset($_SESSION['game_fail']) ? $_SESSION['game_fail'] : '';
 ?>
 <!DOCTYPE html>
 <html>
@@ -38,24 +43,24 @@
         <div class="row justify-content-center">
             <div class="col-md-6">
 
-                <div class="card">
-                    <div class="card-header">
-                        <b>No more lives</b> <!--View your score-->
-                        <a href="history.php" class=" float-right">View your score</a>
-                    </div>
+                <div class="card <?php echo $successMessage ? 'alert-success' : 'alert-danger'?>">
                     <div class="card-body px-5">
                         <div class="text-center">
-                            <h1>Game Over</h1>
+                            <?php
+                                if ($successMessage) {
+                                    echo '<h1>Congratulations!</h1>';
+                                    echo '<p>' . $successMessage . '</p>';
+                                } elseif ($failMessage) {
+                                    echo '<h1> Ooops! </h1>';
+                                    echo '<p>' . $failMessage . '</p>';
+                                }
+                            ?>
+                             <form action="level.php" method="post">
+                                <button type="submit" class="level-btn alert-link" name="try-again">Try again</button>
+                            </form>
                         </div>
                     </div>
                 </div>
-            <?php
-            echo "<div class='alert alert-dismissible alert-danger fade show mt-3'>
-                    <form action=\"level.php\" method=\"post\">
-                        <button type=\"submit\" class=\"level-btn alert-link\" name=\"try-again\">Try again</button>
-                    </form>
-                </div>"
-                ?>
             </div>
         </div>
     </div>
