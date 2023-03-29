@@ -107,7 +107,11 @@
     if(isset($_SESSION['level_success'])) {
         $successMessage = $_SESSION['level_success'];
     }
-
+    if(isset($_POST['give-up'])) {
+        $_SESSION['game_fail'] = 'You have give-up the game!';
+        $insert->insertScore('incomplete', $livesUsed, $_SESSION['username']);
+        header('Location: ../pages/gameOver.php');
+    }
 ?>
 <!DOCTYPE html>
 <html>
