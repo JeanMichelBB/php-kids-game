@@ -1,24 +1,24 @@
 <?php
-    session_start();
+session_start();
 
-    if(!isset($_SESSION['username'])) {
-        header('Location: ../pages/login.php');
-    }
+if(!isset($_SESSION['username'])) {
+    header('Location: ../pages/login.php');
+}
 
-    include_once('./components/components.php');
-    include_once('../game/Game.php');
-    
-    const MAX_LIVES = 6;
-    const MAX_LEVEL = 6;
-    
-    $livesUsed = isset($_SESSION['livesUsed']) ? $_SESSION['livesUsed'] : 0;
-    $isGameOver = isset($_SESSION['game_fail']) || $livesUsed >= 6 ? true : false;
-    $level = isset($_SESSION['level']) ? $_SESSION['level'] : 1;
-    
-    $game = new Game();
+include_once('./components/components.php');
+include_once('../game/Game.php');
 
-    if(!isset($_POST['submit-answer'])) {
-        switch ($level) {
+const MAX_LIVES = 6;
+const MAX_LEVEL = 6;
+
+$livesUsed = isset($_SESSION['livesUsed']) ? $_SESSION['livesUsed'] : 0;
+$isGameOver = isset($_SESSION['game_fail']) || $livesUsed >= 6 ? true : false;
+$level = isset($_SESSION['level']) ? $_SESSION['level'] : 1;
+
+$game = new Game();
+
+if(!isset($_POST['submit-answer'])) {
+    switch ($level) {
         case 1:
             $game->level1();
             break;
@@ -26,64 +26,70 @@
             $game->level2();
             break;
         case 3:
-            $game->level1();
+            $game->level3();
             break;
         case 4:
-            $game->level2();
+            $game->level4();
             break;
-        case 5: 
-            $game->level1();
+        case 5:
+            $game->level5();
             break;
         case 6:
-            $game->level2();
+            $game->level6();
             break;
         default:
             echo "Invalid level number.";
             break;
-        }
     }
-    if(isset($_POST['submit-answer'])) {
-        $userInput = $_POST['answer'];
-        $rightAnswer = explode(",",$_POST['right-answer']);
-        if ($isGameOver) {
-            $livesUsed = 0;
-            $_SESSION['livesUsed'] = $livesUsed;
-            $_SESSION['game_fail'] = 'Game over!';
-            header('Location: ../pages/gameOver.php');
-        }
-        if ($game->checkAnswer($userInput, $rightAnswer)) {
-            $_SESSION['level_success'] = 'You have successfully completed level ' . $level . '!';
-            unset($_SESSION['level_fail']);
-            if ($level == MAX_LEVEL) {
-                unset($_SESSION['level_success']);
-                $_SESSION['game_success'] = 'You have successfully completed the game!';
-            }
-            header('Location: level.php');
-        } else {
-            $livesUsed++;
-            $_SESSION['livesUsed']++;
-            $_SESSION['level_fail'] = 'You have failed level ' . $level . '!';
-        }
-    }
-
-    if(isset($_POST['next-level']) && $level < MAX_LEVEL){
-        $level++;
-        $_SESSION['level'] = $level;
-        unset($_SESSION['level_fail']);
-        unset($_SESSION['level_success']);
-        header('Location: level.php');
-    }
-
-    if(isset($_POST['try-again']) && !$isGameOver) {
-        unset($_SESSION['level_fail']);
-        unset($_SESSION['level_success']);
-        header('Refresh:0');
-    } elseif (isset($_POST['try-again']) && $livesUsed >= MAX_LIVES) {
-        unset($_SESSION['level_fail']);
-        unset($_SESSION['level_success']);
+}
+if(isset($_POST['submit-answer'])) {
+    $userInput = $_POST['answer'];
+    $rightAnswer = explode(",", $_POST['right-answer']);
+    if ($isGameOver) {
+        $livesUsed = 0;
+        $_SESSION['livesUsed'] = $livesUsed;
         $_SESSION['game_fail'] = 'Game over!';
         header('Location: ../pages/gameOver.php');
     }
+    if ($game->checkAnswer($userInput, $rightAnswer)) {
+        $_SESSION['level_success'] = 'You have successfully completed level ' . $level . '!';
+        unset($_SESSION['level_fail']);
+        if ($level == MAX_LEVEL) {
+            unset($_SESSION['level_success']);
+            $_SESSION['game_success'] = 'You have successfully completed the game!';
+        }
+        header('Location: level.php');
+    } else {
+        $livesUsed++;
+        $_SESSION['livesUsed']++;
+        $_SESSION['level_fail'] = 'You have failed level ' . $level . '!';
+    }
+}
+
+if(isset($_POST['next-level']) && $level < MAX_LEVEL){
+    $level++;
+    $_SESSION['level'] = $level;
+    unset($_SESSION['level_fail']);
+    unset($_SESSION['level_success']);
+    header('Location: level.php');
+}
+
+if(isset($_POST['try-again']) && !$isGameOver) {
+    unset($_SESSION['level_fail']);
+    unset($_SESSION['level_success']);
+    header('Refresh:0');
+} elseif (isset($_POST['try-again']) && $livesUsed >= MAX_LIVES) {
+    unset($_SESSION['level_fail']);
+    unset($_SESSION['level_success']);
+    $_SESSION['game_fail'] = 'Game over!';
+    header('Location: ../pages/gameOver.php');
+}
+if(isset($_POST['give-up'])) {
+    unset($_SESSION['level_fail']);
+    unset($_SESSION['level_success']);
+    $_SESSION['game_fail'] = 'Game over!';
+    header('Location: ../pages/gameOver.php');
+}
 
 ?>
 <!DOCTYPE html>
@@ -103,29 +109,33 @@
             text-decoration: underline;
             cursor: pointer;
         }
+        .myCard {
+            width: 50px;
+            height: 50px;
+        }
     </style>
     <title>Level <?php echo $level; ?></title>
 </head>
 
 <body>
-    <?php 
-        if (isset($_SESSION['level_fail'])) {
-            $failMessage = $_SESSION['level_fail'];
-        }
-        if (isset($_SESSION['game_fail'])) {
-            $failMessage = $_SESSION['level_fail'];
-        }
-        if(isset($_SESSION['level_success'])) {
-            unset($_SESSION['level_fail']);
-            $successMessage = $_SESSION['level_success'];
-        }
-        echo createHeader();
-        echo createNav();
+    <?php
+    if (isset($_SESSION['level_fail'])) {
+        $failMessage = $_SESSION['level_fail'];
+    }
+    if (isset($_SESSION['game_fail'])) {
+        $failMessage = $_SESSION['level_fail'];
+    }
+    if(isset($_SESSION['level_success'])) {
+        unset($_SESSION['level_fail']);
+        $successMessage = $_SESSION['level_success'];
+    }
+    echo createHeader();
+    echo createNav();
     ?>
     <div class="container mt-5">
         <div class="row justify-content-center">
             <div class="col-md-6">
-            <?php
+                <?php
                 if ($failMessage) {
                     echo "<div class='alert alert-dismissible alert-danger mt-3 d-flex'>
                                 $failMessage
@@ -152,23 +162,25 @@
                             <div class="form-group">
                                 <label for="inputText" class="form-row justify-content-around">
                                     <?php
-                                        foreach ($game->output as $card) {
-                                            echo '<span class="rounded font-weight-bold border p-2 bg-light text-center" style="width: 38px; height: 38px">' .$card . "</span>";
-                                        }
+                                    foreach ($game->output as $card) {
+                                        echo '<span class="rounded font-weight-bold border p-2 bg-light text-center myCard" >' . $card . "</span>";
+                                    }
                                     ?>
                                 </label>
                                 <div class="form-row justify-content-around">
                                     <?php
-                                    for($i = 0; $i < count($game->answer); $i++) {
-                                        echo "<input required maxlength=\"$game->inputMaxLength\" type='text' class='form-control text-center col-md-1' name='answer[]' >";
+                                    for ($i = 0; $i < count($game->answer); $i++) {
+                                        echo "<input required maxlength=\"$game->inputMaxLength\" type='text' class='form-control text-center col-md-1.5 myCard' name='answer[]' >";
                                     }
                                     ?>
                                 </div>
                             </div>
                             <button type="submit" class="btn btn-primary" <?php echo !$game->output ? 'disabled' : ''; ?> name="submit-answer">Submit</button>
-                            <input type="hidden" name="right-answer" value="<?php echo implode(",",$game->answer); ?>">
+                            <form action="level.php" method="post">
+                                <button type="submit" class="btn btn-danger float-right" name="give-up">Give-up</button>
+                            </form>
+                            <input type="hidden" name="right-answer" value="<?php echo implode(",", $game->answer); ?>">
                         </form>
-
                         <div class="mt-3">
                             <p id="result"></p>
                         </div>

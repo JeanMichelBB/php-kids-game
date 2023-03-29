@@ -42,13 +42,21 @@ class Game
         $_SESSION['level'] = 3;
         $numbers = $this->createArrayOfNum(); 
         $rightAnswer = $this->createCorrectAnswer($numbers, 'asc');  
+        $this->inputMaxLength = 2;
+        $this->output = $numbers;
+        $this->answer = $rightAnswer;
+        $this->message = 'Write the numbers in ascending order';
     }
 
     public function level4()
     {
         $_SESSION['level'] = 4;
         $numbers = $this->createArrayOfNum(); 
-        $rightAnswer = $this->createCorrectAnswer($numbers, 'asc');  
+        $rightAnswer = $this->createCorrectAnswer($numbers, 'desc'); 
+        $this->inputMaxLength = 2;
+        $this->output = $numbers;
+        $this->answer = $rightAnswer; 
+        $this->message = 'Write the numbers in descending order';
     }
 
     public function level5()
