@@ -1,5 +1,14 @@
 <?php
+session_start();
+$_SESSION['update_error'] = "";
+$_SESSION['update_success'] = "";
+$_SESSION['reg_error'] = "";
+$_SESSION['reg_success'] = "";
+
 include('./components/components.php');
+if (isset($_SESSION['username'])) {
+    header('Location: ../pages/level.php');
+}
 ?>
 <!DOCTYPE html>
 <html>
@@ -13,18 +22,31 @@ include('./components/components.php');
 </head>
 
 <body>
-    <?php 
-        
-        createHeader();
-        createNav();
+    <?php
+    if (isset($_SESSION['login_error'])) {
+        $errorMessage = $_SESSION['login_error'];
+    }
+    echo createHeader();
+    echo createNav();
     ?>
     <div class="container mt-5">
         <div class="row justify-content-center">
             <div class="col-md-6">
+                <?php
+                if ($errorMessage) {
+                    echo "<div class='alert alert-dismissible alert-danger fade show mt-3'>
+                                $errorMessage
+                                <button type=\"button\" class=\"close\" data-dismiss=\"alert\" aria-label=\"Close\">
+                                    <span aria-hidden=\"true\">&times;</span>
+                                </button>
+                            </div>";
+                }
+                ?>
                 <div class="card">
                     <div class="card-header">
                         Login
                     </div>
+
                     <div class="card-body">
                         <form method="POST" action='../helpers/auth.php'>
                             <div class="form-group">
@@ -35,8 +57,9 @@ include('./components/components.php');
                                 <label for="password">Password:</label>
                                 <input type="password" class="form-control" id="password" name="password" required>
                                 <?php
-                                if (isset($_GET['error'])) {
-                                    $error_message = $_GET['error'];
+
+                                if ($errorMessage) {
+                                    // show forgot password link
                                     echo "<a href='forgot-password.php' class='btn btn-link'>Forgotten? Please, change your password.</a>";
                                 }
                                 ?>
@@ -45,51 +68,17 @@ include('./components/components.php');
                             <a href="registration.php" class="btn btn-secondary" name="sign-up">Sign up</a>
                         </form>
                     </div>
-                    <?php
-                    if (isset($_GET['error'])) {
-                        $error_message = $_GET['error'];
-                        echo "<div class='alert alert-danger mt-3'>$error_message</div>";
-                    }
-
-                    ?>
                 </div>
             </div>
         </div>
     </div>
-    <?php createFooter(); ?>
+    <?php echo createFooter(); ?>
     <!-- Include Bootstrap JS -->
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
-    <!-- <script>
-
-        const form = document.querySelector('form');
-        const username = form.querySelector('#username');
-        const password = form.querySelector('#password');
-
-        form.addEventListener('submit', (event) => {
-            // Check if username and password are correct
-            if (!checkCredentials(username.value, password.value)) {
-                alert('Sorry, you entered a wrong username or password!');
-                event.preventDefault();
-                return;
-            }
-
-            // Start session and redirect to first level game
-            startSession();
-            window.location.href = 'first-level-game.html';
-        });
-
-        function checkCredentials(username, password) {
-            // Check if username and password are correct
-            // Return true if credentials are correct, false otherwise
-        }
-
-        function startSession() {
-            // Start session
-        }
-
-    </script> -->
+    <script>
+    </script>
 </body>
 
 </html>
