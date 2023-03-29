@@ -189,7 +189,7 @@
                                 <div class="form-row justify-content-around">
                                     <?php
                                     for ($i = 0; $i < count($game->answer); $i++) {
-                                        echo "<input maxlength=\"$game->inputMaxLength\" type='text' class='form-control text-center col-md-1 myCard answer' name='answer[]' >";
+                                        echo "<input autofocus maxlength=\"$game->inputMaxLength\" type='text' class='form-control text-center col-md-1 myCard answer' name='answer[]' >";
                                     }
                                     ?>
                                 </div>
@@ -215,15 +215,35 @@
     <script>
         const inputs = document.querySelectorAll('.answer');
         const submitBt = document.querySelector('.submitBt');
+        let allFilled = true;
+        const lastInput = inputs[inputs.length - 1];
+
         inputs.forEach(input => {
             input.addEventListener('input', () => {
-                if (inputs[0].value.length > 0 && inputs[1].value.length > 0 && inputs[2].value.length > 0 && inputs[3].value.length > 0 && inputs[4].value.length > 0 && inputs[5].value.length > 0) {
-                    submitBt.disabled = false;
-                } else {
-                    submitBt.disabled = true;
+                if (input.value.length === 1) {
+                    input.nextElementSibling.focus();
+                }
+                if (input.value.length === 0) {
+                    input.previousElementSibling.focus();
                 }
             });
         });
+
+        lastInput.addEventListener('input', () => {
+            inputs.forEach(input => {
+                if (!input.value) {
+                    allFilled = false;
+                    return;
+                }
+            });
+
+            if (allFilled) {
+                submitBt.removeAttribute('disabled');
+            } else {
+                submitBt.setAttribute('disabled', true);
+            }
+        });
+
     </script>
 </body>
 </html>
