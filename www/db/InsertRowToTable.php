@@ -47,20 +47,35 @@ class InsertRowToTable extends ManipulateDB
         }
     }
 
-    public function insertScore($result, $lives, $registrationOrder) {
+    public function insertScore($userResult, $lives, $username) {
         //1-Connect to the DBMS
         if ($this->createConnection() === TRUE) {
                 //2-Connect to the DB
                 if ($this->connectToDB() === TRUE) {
                     //3-Check that the Table exists 
                     if ($this->executeSql($this->sqlCode()['descScore']) === TRUE) {
-                        //4-Insert data to the Table
-                        $stmt = $this->connection->prepare($this->sqlCode()['insertScore']);
-                        $stmt->bind_param("ssss", date("Y-m-d H:i:s"), $result, $lives, $registrationOrder);
+                        //4-Select player
+                        $stmt = $this->connection->prepare($this->sqlCode()['selectPlayer']);
+                        $stmt->bind_param("s", $username);
                         if($stmt->execute() === FALSE) {
                             echo $this->messages()['link']['tryAgain'];
                             die($this->messages()['error']['insertTab']);
+                        } else {
+                            $result = $stmt->get_result();
+                            $player = $result->fetch_assoc();
+                            $registrationOrder = $player['registrationOrder'];
+                            //5-Insert data to the Table
+                            $stmt = $this->connection->prepare($this->sqlCode()['insertScore']);
+                            $stmt->bind_param("ssss", date("Y-m-d H:i:s"), $userResult, $lives, $registrationOrder);
+
+                            if($stmt->execute() === FALSE) {
+                                echo $this->messages()['link']['tryAgain'];
+                                die($this->messages()['error']['insertTab']);
+                            } else {
+                                return TRUE;
+                            }
                         }
+                        
                     }
                     //Cannot Check that the Table exists
                     else{
