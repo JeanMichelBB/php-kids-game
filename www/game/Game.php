@@ -89,8 +89,27 @@ class Game
         return $numbers;
     }
 
-    function checkAnswer($userInput, $correctAnswer)
-    {
+    function validateAnswer($userInput){
+        $level = $_SESSION['level'];
+        foreach ($userInput as $key => $value) {
+            if($level == 1 || $level == 2 || $level == 5) {
+                $userInput[$key] = strtoupper($value);
+                    if(validString($userInput[$key])) {
+                        return true;
+                    } else {
+                        $_SESSION['input_error'] = 'Your input is not a string!';
+                        return false;
+                    }
+            } else {
+                    if(!validateNumber($userInput)) {
+                        $_SESSION['input_error'] = 'Your input is not a number!';
+                        return false;
+                    }
+            }  
+        }
+    }
+
+    function checkAnswer($userInput, $correctAnswer){
         if ($userInput == $correctAnswer) {
             return true;
         } else {

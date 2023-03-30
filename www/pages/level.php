@@ -10,6 +10,7 @@
     include_once('./components/components.php');
     include_once('../game/Game.php');
     include_once('../db/db.php');
+    include_once('../helpers/validation.php');
 
     const MAX_LIVES = 6;
     const MAX_LEVEL = 6;
@@ -24,7 +25,7 @@
     if(!isset($_POST['submit-answer'])) {
         switch ($level) {
         case 1:
-            $game->level1();
+            $game->level3();
             break;
         case 2:
             $game->level2();
@@ -49,48 +50,62 @@
     }
     // When the user submits an answer
     if(isset($_POST['submit-answer'])) {
+        unset($_SESSION['input_error']);
         $userInput = $_POST['answer'];
         $rightAnswer = explode(",",$_POST['right-answer']);
+        
+        if($game->validateAnswer($userInput)) {
+            // Check if the answer is correct
+            if ($game->checkAnswer($userInput, $rightAnswer)) {
 
-        // Check if the answer is correct
-        if ($game->checkAnswer($userInput, $rightAnswer)) {
+                // If the the level is the last one
+                if ($level == MAX_LEVEL) {
+                    unset($_SESSION['level_success']);
+                    unset($_SESSION['level_fail']);
 
-            // If the the level is the last one
-            if ($level == MAX_LEVEL) {
-                unset($_SESSION['level_success']);
-                unset($_SESSION['level_fail']);
+                    header('Location: ../pages/gameOver.php');
+                } else { // If the level is not the last one
+                    $_SESSION['level_success'] = 'You have successfully completed level ' . $level . '!';
 
-                $_SESSION['game_success'] = 'You have successfully completed the game!';
-                $insert->insertScore('success', $livesUsed, $_SESSION['username']);
+                    if ($livesUsed >= MAX_LIVES) {
+                        unset($_SESSION['level_fail']);
+                        unset($_SESSION['level_success']);
 
-                header('Location: ../pages/gameOver.php');
+                        $_SESSION['game_fail'] = 'You have failed the game!';
+                        $insert->insertScore('failure', $livesUsed, $_SESSION['username']);
+                        $livesUsed = 0;
+                        $_SESSION['livesUsed'] = $livesUsed;
 
-            } else { // If the level is not the last one
-                $_SESSION['level_success'] = 'You have successfully completed level ' . $level . '!';
+                        header('Location: ../pages/gameOver.php');
+                    } else {
+                        unset($_SESSION['level_success']);
+                        $_SESSION['level_fail'] = 'You have failed level ' . $level . '!';
+                    }
+                }
+            } else { // If the answer is wrong
+                $livesUsed++;
+                $_SESSION['livesUsed']++;
+                // If the user has used all the lives
+                if ($livesUsed >= MAX_LIVES) {
+                    unset($_SESSION['level_fail']);
+                    unset($_SESSION['level_success']);
 
-                unset($_SESSION['level_fail']);
-                header('Location: level.php');
+                    $_SESSION['game_fail'] = 'You have failed the game!';
+                    $insert->insertScore('failure', $livesUsed, $_SESSION['username']);
+                    $livesUsed = 0;
+                    $_SESSION['livesUsed'] = $livesUsed;
+
+                    header('Location: ../pages/gameOver.php');
+                } else { // If the user has not used all the lives
+                    unset($_SESSION['level_success']);
+                    $_SESSION['level_fail'] = 'You have failed level ' . $level . '!';
+                }
             }
-        } else { // If the answer is wrong
-            $livesUsed++;
-            $_SESSION['livesUsed']++;
-            // If the user has used all the lives
-            if ($livesUsed >= MAX_LIVES) {
-                unset($_SESSION['level_fail']);
-                unset($_SESSION['level_success']);
-
-                $_SESSION['game_fail'] = 'You have failed the game!';
-                $insert->insertScore('failure', $livesUsed, $_SESSION['username']);
-                $livesUsed = 0;
-                $_SESSION['livesUsed'] = $livesUsed;
-
-                header('Location: ../pages/gameOver.php');
-            } else { // If the user has not used all the lives
-                unset($_SESSION['level_success']);
-                $_SESSION['level_fail'] = 'You have failed level ' . $level . '!';
-            }
+        } else {
+            header('Location: level.php');
         }
     }
+
     // When the user clicks on the next level button
     if(isset($_POST['next-level'])){
         $level++;
@@ -118,6 +133,10 @@
     // If the user has succeeded the level set the success message
     if(isset($_SESSION['level_success'])) {
         $successMessage = $_SESSION['level_success'];
+    }
+    // If the user has an input error set the input error message
+    if(isset($_SESSION['input_error'])) {
+        $inputError = $_SESSION['input_error'];
     }
 ?>
 <!DOCTYPE html>
@@ -174,6 +193,17 @@
                                 </form>
                             </div>";
                 }
+                if ($inputError) {
+                    echo "<div class='alert alert-dismissible alert-danger mt-3 d-flex'>
+                                $inputError
+                                <form action=\"level.php\" method=\"post\">
+                                    <button type=\"button\" class=\"close\" data-dismiss=\"alert\" aria-label=\"Close\">
+                                        <span aria-hidden=\"true\">&times;</span>
+                                    </button>
+                                </form>
+
+                            </div>";
+                } 
                 ?>
                 <div class="card">
                     <div class="card-header d-flex justify-content-between">
@@ -251,7 +281,7 @@
                 }
             });
         });
-
+        
     </script>
 </body>
 </html>

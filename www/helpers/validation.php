@@ -9,13 +9,11 @@ function validateNumber($number)
     }
 }
 
-function validateString($string)
+function validString($string)
 {
-    if (is_string($string)) {
+    if (!is_numeric($string)) {
         return true;
     } else {
         return false;
     }
 }
-
-

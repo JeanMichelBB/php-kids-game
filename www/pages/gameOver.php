@@ -10,6 +10,7 @@
     include_once('../game/Game.php');
     unset($_SESSION['livesUsed']);
     unset($_SESSION['level']);
+    unset($_SESSION['input_error']);
 
     $successMessage = isset($_SESSION['game_success']) ? $_SESSION['game_success'] : '';
     $failMessage = isset($_SESSION['game_fail']) ? $_SESSION['game_fail'] : '';
