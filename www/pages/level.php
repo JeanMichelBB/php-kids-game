@@ -205,10 +205,12 @@
                         <p class="mb-0"><b>Lives:</b> <?php echo MAX_LIVES - $livesUsed . "/" . MAX_LIVES; ?></p>
                     </div>
                     <div class="card-body px-5">
+                        <span>Level progress</span>
                         <div class="progress mb-4">
                             <?php
                             $progress = ($level - 1) * (100 / MAX_LEVEL);
-                            echo "<div class='progress-bar' role='progressbar' style='width: $progress%' aria-valuenow='$progress' aria-valuemin='0' aria-valuemax='100'></div>";
+                            $progress = round($progress);
+                            echo "<div class='progress-bar' role='progressbar' style='width: $progress%' aria-valuenow='$progress' aria-valuemin='0' aria-valuemax='100'>$progress%</div>";
                             ?>
                         </div>
                         <form action="level.php" method="post">
