@@ -20,6 +20,7 @@
     $game = new Game();
     $insert = new InsertRowToTable();
 
+    // Display the correct level
     if(!isset($_POST['submit-answer'])) {
         switch ($level) {
         case 1:
@@ -29,10 +30,10 @@
             $game->level2();
             break;
         case 3:
-            $game->level1();
+            $game->level3();
             break;
         case 4:
-            $game->level2();
+            $game->level4();
             break;
         case 5: 
             $game->level1();
@@ -46,11 +47,15 @@
             break;
         }
     }
+    // When the user submits an answer
     if(isset($_POST['submit-answer'])) {
         $userInput = $_POST['answer'];
         $rightAnswer = explode(",",$_POST['right-answer']);
 
+        // Check if the answer is correct
         if ($game->checkAnswer($userInput, $rightAnswer)) {
+
+            // If the the level is the last one
             if ($level == MAX_LEVEL) {
                 unset($_SESSION['level_success']);
                 unset($_SESSION['level_fail']);
@@ -59,16 +64,17 @@
                 $insert->insertScore('success', $livesUsed, $_SESSION['username']);
 
                 header('Location: ../pages/gameOver.php');
-            } else {
+
+            } else { // If the level is not the last one
                 $_SESSION['level_success'] = 'You have successfully completed level ' . $level . '!';
 
                 unset($_SESSION['level_fail']);
                 header('Location: level.php');
             }
-        } else {
+        } else { // If the answer is wrong
             $livesUsed++;
             $_SESSION['livesUsed']++;
-
+            // If the user has used all the lives
             if ($livesUsed >= MAX_LIVES) {
                 unset($_SESSION['level_fail']);
                 unset($_SESSION['level_success']);
@@ -79,13 +85,13 @@
                 $_SESSION['livesUsed'] = $livesUsed;
 
                 header('Location: ../pages/gameOver.php');
-            } else {
+            } else { // If the user has not used all the lives
                 unset($_SESSION['level_success']);
                 $_SESSION['level_fail'] = 'You have failed level ' . $level . '!';
             }
         }
     }
-
+    // When the user clicks on the next level button
     if(isset($_POST['next-level'])){
         $level++;
         $_SESSION['level'] = $level;
@@ -93,23 +99,25 @@
         unset($_SESSION['level_success']);
         header('Location: level.php');
     } 
-
+    // When the user clicks on the try again button
     if(isset($_POST['try-again'])) {
         unset($_SESSION['level_fail']);
         unset($_SESSION['level_success']);
         header('Refresh:0');
     }
-
-    if (isset($_SESSION['level_fail'])) {
-        $failMessage = $_SESSION['level_fail'];
-    }
-    if(isset($_SESSION['level_success'])) {
-        $successMessage = $_SESSION['level_success'];
-    }
+    // When the user clicks on the give up button
     if(isset($_POST['give-up'])) {
         $_SESSION['game_fail'] = 'You have give-up the game!';
         $insert->insertScore('incomplete', $livesUsed, $_SESSION['username']);
         header('Location: ../pages/gameOver.php');
+    }
+    // If the user has failed the level set the fail message
+    if (isset($_SESSION['level_fail'])) {
+        $failMessage = $_SESSION['level_fail'];
+    }
+    // If the user has succeeded the level set the success message
+    if(isset($_SESSION['level_success'])) {
+        $successMessage = $_SESSION['level_success'];
     }
 ?>
 <!DOCTYPE html>
@@ -216,11 +224,25 @@
     <script>
         const inputs = document.querySelectorAll('.answer');
         const submitBt = document.querySelector('.submitBt');
-        let allFilled = true;
-        const lastInput = inputs[inputs.length - 1];
         const maxlength = <?php echo $game->inputMaxLength; ?>;
+       
         inputs.forEach(input => {
+            let allFilled = true;
             input.addEventListener('input', () => {
+                // Check if all inputs are filled
+                inputs.forEach(inpt => {
+                    if (!inpt.value) {
+                        allFilled = false;
+                        return;
+                    }
+                });
+                // Enable the submit button if all inputs are filled
+                if (allFilled) {
+                    submitBt.removeAttribute('disabled');
+                } else {
+                    submitBt.setAttribute('disabled', true);
+                }
+                // Moves the focus to the next input
                 if (input.value.length === maxlength) {
                     input.nextElementSibling.focus();
                 }
@@ -228,21 +250,6 @@
                     input.previousElementSibling.focus();
                 }
             });
-        });
-
-        lastInput.addEventListener('input', () => {
-            inputs.forEach(input => {
-                if (!input.value) {
-                    allFilled = false;
-                    return;
-                }
-            });
-
-            if (allFilled) {
-                submitBt.removeAttribute('disabled');
-            } else {
-                submitBt.setAttribute('disabled', true);
-            }
         });
 
     </script>
