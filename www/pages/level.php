@@ -25,7 +25,7 @@
     if(!isset($_POST['submit-answer'])) {
         switch ($level) {
         case 1:
-            $game->level3();
+            $game->level1();
             break;
         case 2:
             $game->level2();
@@ -54,33 +54,27 @@
         $userInput = $_POST['answer'];
         $rightAnswer = explode(",",$_POST['right-answer']);
         
+        // Check if the user input is valid
         if($game->validateAnswer($userInput)) {
+            $userAnswer = array_map('strtoupper', $userInput);
+            echo "user answer level: ". implode($userAnswer);
             // Check if the answer is correct
-            if ($game->checkAnswer($userInput, $rightAnswer)) {
+            if ($game->checkAnswer($userAnswer, $rightAnswer)) {
 
                 // If the the level is the last one
                 if ($level == MAX_LEVEL) {
                     unset($_SESSION['level_success']);
                     unset($_SESSION['level_fail']);
 
+                    $_SESSION['game_success'] = 'You have successfully completed the game!';
+                    $insert->insertScore('success', $livesUsed, $_SESSION['username']);
+
                     header('Location: ../pages/gameOver.php');
                 } else { // If the level is not the last one
                     $_SESSION['level_success'] = 'You have successfully completed level ' . $level . '!';
 
-                    if ($livesUsed >= MAX_LIVES) {
-                        unset($_SESSION['level_fail']);
-                        unset($_SESSION['level_success']);
-
-                        $_SESSION['game_fail'] = 'You have failed the game!';
-                        $insert->insertScore('failure', $livesUsed, $_SESSION['username']);
-                        $livesUsed = 0;
-                        $_SESSION['livesUsed'] = $livesUsed;
-
-                        header('Location: ../pages/gameOver.php');
-                    } else {
-                        unset($_SESSION['level_success']);
-                        $_SESSION['level_fail'] = 'You have failed level ' . $level . '!';
-                    }
+                    unset($_SESSION['level_fail']);
+                    header('Location: level.php');
                 }
             } else { // If the answer is wrong
                 $livesUsed++;
@@ -101,7 +95,7 @@
                     $_SESSION['level_fail'] = 'You have failed level ' . $level . '!';
                 }
             }
-        } else {
+        } else { // If the user input is not valid
             header('Location: level.php');
         }
     }
