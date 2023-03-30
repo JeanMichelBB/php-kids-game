@@ -37,10 +37,10 @@
             $game->level4();
             break;
         case 5: 
-            $game->level1();
+            $game->level5();
             break;
         case 6:
-            $game->level2();
+            $game->level6();
             break;
         default:
             $level = 1;
@@ -56,10 +56,8 @@
         
         // Check if the user input is valid
         if($game->validateAnswer($userInput)) {
-            $userAnswer = array_map('strtoupper', $userInput);
-            echo "user answer level: ". implode($userAnswer);
             // Check if the answer is correct
-            if ($game->checkAnswer($userAnswer, $rightAnswer)) {
+            if ($game->checkAnswer($userInput, $rightAnswer)) {
 
                 // If the the level is the last one
                 if ($level == MAX_LEVEL) {
@@ -127,6 +125,8 @@
     // If the user has succeeded the level set the success message
     if(isset($_SESSION['level_success'])) {
         $successMessage = $_SESSION['level_success'];
+        $game->output = [];
+        $game->answer = [];
     }
     // If the user has an input error set the input error message
     if(isset($_SESSION['input_error'])) {
@@ -176,14 +176,14 @@
                     echo "<div class='alert alert-dismissible alert-danger mt-3 d-flex'>
                                 $failMessage
                                 <form action=\"level.php\" method=\"post\">
-                                    <button type=\"submit\" class=\"level-btn alert-link\" name=\"try-again\">Try again</button>
+                                    <button autofocus type=\"submit\" class=\"level-btn alert-link\" name=\"try-again\">Try again</button>
                                 </form>
                             </div>";
                 } if($successMessage) {
                     echo "<div class='alert alert-dismissible alert-success mt-3 d-flex'>
                                 $successMessage
                                 <form action=\"level.php\" method=\"post\">
-                                    <input type=\"submit\" class=\"level-btn alert-link\" name=\"next-level\" value='Next Level' />
+                                    <input autofocus type=\"submit\" class=\"level-btn alert-link\" name=\"next-level\" value='Next Level' />
                                 </form>
                             </div>";
                 }

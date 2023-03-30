@@ -14,6 +14,11 @@
 
     $successMessage = isset($_SESSION['game_success']) ? $_SESSION['game_success'] : '';
     $failMessage = isset($_SESSION['game_fail']) ? $_SESSION['game_fail'] : '';
+
+    if (isset($_POST['try-again'])) {
+        unset($_POST['try-again']);
+        header('Location: ../pages/level.php');
+    }
 ?>
 <!DOCTYPE html>
 <html>
@@ -62,7 +67,7 @@
                                     echo '<p>' . $failMessage . '</p>';
                                 }
                             ?>
-                             <form action="level.php" method="post">
+                             <form method="post" action="gameOver.php">
                                 <button type="submit" class="level-btn alert-link" name="try-again">Try again</button>
                             </form>
                         </div>
