@@ -42,13 +42,21 @@ class Game
         $_SESSION['level'] = 3;
         $numbers = $this->createArrayOfNum(); 
         $rightAnswer = $this->createCorrectAnswer($numbers, 'asc');  
+        $this->inputMaxLength = 2;
+        $this->output = $numbers;
+        $this->answer = $rightAnswer;
+        $this->message = 'Write the numbers in ascending order';
     }
 
     public function level4()
     {
         $_SESSION['level'] = 4;
         $numbers = $this->createArrayOfNum(); 
-        $rightAnswer = $this->createCorrectAnswer($numbers, 'asc');  
+        $rightAnswer = $this->createCorrectAnswer($numbers, 'desc'); 
+        $this->inputMaxLength = 2;
+        $this->output = $numbers;
+        $this->answer = $rightAnswer; 
+        $this->message = 'Write the numbers in descending order';
     }
 
     public function level5()
@@ -74,6 +82,7 @@ class Game
         for ($i = 0; $i < 6; $i++) {
             do {
                 $number = rand(0, 100);
+                $number = str_pad($number, 2, '0', STR_PAD_LEFT); // add leading zeros
             } while (in_array($number, $numbers));
             $numbers[$i] = $number;
         }
