@@ -40,7 +40,7 @@
         <div class="row justify-content-center">
             <div class="col-md-6">
                 <?php
-                if ($errorMessage) {
+                if (isset($errorMessage)) {
                     echo "<div class='alert alert-dismissible alert-danger fade show mt-3'>
                                 $errorMessage
                                 <button type=\"button\" class=\"close\" data-dismiss=\"alert\" aria-label=\"Close\">
@@ -65,7 +65,7 @@
                                 <input type="password" class="form-control" id="password" name="password" required>
                                 <?php
 
-                                if ($errorMessage) {
+                                if (isset($errorMessage)) {
                                     // show forgot password link
                                     echo "<a href='forgot-password.php' class='btn btn-link'>Forgotten? Please, change your password.</a>";
                                 }

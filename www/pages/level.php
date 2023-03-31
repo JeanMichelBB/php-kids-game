@@ -4,7 +4,7 @@
     unset($_SESSION['game_success']);
 
     if(!isset($_SESSION['username'])) {
-        header('Location: ../pages/login.php');
+        header('Location: login.php');
     }
 
     include_once('./components/components.php');
@@ -76,7 +76,7 @@
                 }
             } else { // If the answer is wrong
                 $livesUsed++;
-                $_SESSION['livesUsed']++;
+                $_SESSION['livesUsed'] = $livesUsed;
                 // If the user has used all the lives
                 if ($livesUsed >= MAX_LIVES) {
                     unset($_SESSION['level_fail']);
@@ -172,14 +172,14 @@
         <div class="row justify-content-center">
             <div class="col-md-6">
                 <?php
-                if ($failMessage) {
+                if (isset($failMessage)) {
                     echo "<div class='alert alert-dismissible alert-danger mt-3 d-flex'>
                                 $failMessage
                                 <form action=\"level.php\" method=\"post\">
                                     <button autofocus type=\"submit\" class=\"level-btn alert-link\" name=\"try-again\">Try again</button>
                                 </form>
                             </div>";
-                } if($successMessage) {
+                } if(isset($successMessage)) {
                     echo "<div class='alert alert-dismissible alert-success mt-3 d-flex'>
                                 $successMessage
                                 <form action=\"level.php\" method=\"post\">
@@ -187,7 +187,7 @@
                                 </form>
                             </div>";
                 }
-                if ($inputError) {
+                if (isset($inputError)) {
                     echo "<div class='alert alert-dismissible alert-danger mt-3 d-flex'>
                                 $inputError
                                 <form action=\"level.php\" method=\"post\">

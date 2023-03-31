@@ -9,13 +9,17 @@
     unset($_SESSION['update_success']);
 
     if (isset($_SESSION['username'])) {
-        header('Location: ../pages/level.php');
+        header('Location: level.php');
     }
 
     if (isset($_SESSION['reg_error'])) {
+        unset($_SESSION['reg_success']);
         $errorMessage = $_SESSION['reg_error'];
     }
-
+    if(isset($_SESSION['reg_success'])) {
+        unset($_SESSION['reg_error']);
+        $successMessage = $_SESSION['reg_success'];
+    }
 ?>
 <!DOCTYPE html>
 <html>
@@ -44,9 +48,17 @@
         <div class="row justify-content-center">
             <div class="col-md-6">
                 <?php
-                if ($errorMessage) {
+                if (isset($errorMessage)) {
                     echo "<div class='alert alert-dismissible alert-danger fade show mt-3'>
                                 $errorMessage
+                                <button type=\"button\" class=\"close\" data-dismiss=\"alert\" aria-label=\"Close\">
+                                    <span aria-hidden=\"true\">&times;</span>
+                                </button>
+                            </div>";
+                } if(isset($successMessage)) {
+                    echo "<div class='alert alert-dismissible alert-success fade show mt-3'>
+                                $successMessage
+                                <a autofocus href=\"login.php\" class=\"alert-link\">Log in to your account</a>
                                 <button type=\"button\" class=\"close\" data-dismiss=\"alert\" aria-label=\"Close\">
                                     <span aria-hidden=\"true\">&times;</span>
                                 </button>
