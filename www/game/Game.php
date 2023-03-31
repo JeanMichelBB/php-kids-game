@@ -61,12 +61,26 @@ class Game
 
     public function level5()
     {
-        echo "<p>Level 5 </p>";
+        $_SESSION['level'] = 5;
+        // TODO: change this for the real level 5
+        $letters = $this->generateSetOfRandomLetters(6);
+        $rightAnswer = $this->createCorrectAnswer($letters, 'asc');
+        $this->inputMaxLength = 1;
+        $this->output = $letters;
+        $this->answer = $rightAnswer;
+        $this->message = 'Write the letters in ascending order';
     }
 
     public function level6()
     {
-        echo "<p>Level 6 </p>";
+        $_SESSION['level'] = 6;
+        // TODO: change this for the real level 6
+        $numbers = $this->createArrayOfNum(); 
+        $rightAnswer = $this->createCorrectAnswer($numbers, 'asc');  
+        $this->inputMaxLength = 2;
+        $this->output = $numbers;
+        $this->answer = $rightAnswer;
+        $this->message = 'Write the numbers in ascending order';
     }
 
     function generateSetOfRandomLetters($count)
@@ -81,7 +95,7 @@ class Game
         $numbers = [];
         for ($i = 0; $i < 6; $i++) {
             do {
-                $number = rand(0, 100);
+                $number = rand(1, 99);
                 $number = str_pad($number, 2, '0', STR_PAD_LEFT); // add leading zeros
             } while (in_array($number, $numbers));
             $numbers[$i] = $number;
@@ -89,8 +103,32 @@ class Game
         return $numbers;
     }
 
-    function checkAnswer($userInput, $correctAnswer)
-    {
+    function validateAnswer($userInput){
+        $level = $_SESSION['level'];
+        foreach ($userInput as $key => $value) {
+            if($level == 1 || $level == 2 || $level == 5) {
+                if(validString($userInput[$key])) {
+                    return true;
+                } else {
+                    $_SESSION['input_error'] = 'Your input is not a string!';
+                    return false;
+                }
+            } else {                
+                if(!validateNumber($userInput[$key])) {
+                    $_SESSION['input_error'] = 'Your input is not a number!';
+                    return false;
+                } else {
+                    return true;
+                }
+            }  
+        }
+    }
+    
+    function checkAnswer($userInput, $correctAnswer){
+        $level = $_SESSION['level'];
+        if($level == 1 || $level == 2 || $level == 5) {
+            $userInput = array_map('strtoupper', $userInput);
+        }
         if ($userInput == $correctAnswer) {
             return true;
         } else {

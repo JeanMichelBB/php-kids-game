@@ -10,6 +10,7 @@
     include_once('./components/components.php');
     include_once('../game/Game.php');
     include_once('../db/db.php');
+    include_once('../helpers/validation.php');
 
     const MAX_LIVES = 6;
     const MAX_LEVEL = 6;
@@ -36,10 +37,10 @@
             $game->level4();
             break;
         case 5: 
-            $game->level1();
+            $game->level5();
             break;
         case 6:
-            $game->level2();
+            $game->level6();
             break;
         default:
             $level = 1;
@@ -49,48 +50,54 @@
     }
     // When the user submits an answer
     if(isset($_POST['submit-answer'])) {
+        unset($_SESSION['input_error']);
         $userInput = $_POST['answer'];
         $rightAnswer = explode(",",$_POST['right-answer']);
+        
+        // Check if the user input is valid
+        if($game->validateAnswer($userInput)) {
+            // Check if the answer is correct
+            if ($game->checkAnswer($userInput, $rightAnswer)) {
 
-        // Check if the answer is correct
-        if ($game->checkAnswer($userInput, $rightAnswer)) {
+                // If the the level is the last one
+                if ($level == MAX_LEVEL) {
+                    unset($_SESSION['level_success']);
+                    unset($_SESSION['level_fail']);
 
-            // If the the level is the last one
-            if ($level == MAX_LEVEL) {
-                unset($_SESSION['level_success']);
-                unset($_SESSION['level_fail']);
+                    $_SESSION['game_success'] = 'You have successfully completed the game!';
+                    $insert->insertScore('success', $livesUsed, $_SESSION['username']);
 
-                $_SESSION['game_success'] = 'You have successfully completed the game!';
-                $insert->insertScore('success', $livesUsed, $_SESSION['username']);
+                    header('Location: ../pages/gameOver.php');
+                } else { // If the level is not the last one
+                    $_SESSION['level_success'] = 'You have successfully completed level ' . $level . '!';
 
-                header('Location: ../pages/gameOver.php');
+                    unset($_SESSION['level_fail']);
+                    header('Location: level.php');
+                }
+            } else { // If the answer is wrong
+                $livesUsed++;
+                $_SESSION['livesUsed']++;
+                // If the user has used all the lives
+                if ($livesUsed >= MAX_LIVES) {
+                    unset($_SESSION['level_fail']);
+                    unset($_SESSION['level_success']);
 
-            } else { // If the level is not the last one
-                $_SESSION['level_success'] = 'You have successfully completed level ' . $level . '!';
+                    $_SESSION['game_fail'] = 'You have failed the game!';
+                    $insert->insertScore('failure', $livesUsed, $_SESSION['username']);
+                    $livesUsed = 0;
+                    $_SESSION['livesUsed'] = $livesUsed;
 
-                unset($_SESSION['level_fail']);
-                header('Location: level.php');
+                    header('Location: ../pages/gameOver.php');
+                } else { // If the user has not used all the lives
+                    unset($_SESSION['level_success']);
+                    $_SESSION['level_fail'] = 'You have failed level ' . $level . '!';
+                }
             }
-        } else { // If the answer is wrong
-            $livesUsed++;
-            $_SESSION['livesUsed']++;
-            // If the user has used all the lives
-            if ($livesUsed >= MAX_LIVES) {
-                unset($_SESSION['level_fail']);
-                unset($_SESSION['level_success']);
-
-                $_SESSION['game_fail'] = 'You have failed the game!';
-                $insert->insertScore('failure', $livesUsed, $_SESSION['username']);
-                $livesUsed = 0;
-                $_SESSION['livesUsed'] = $livesUsed;
-
-                header('Location: ../pages/gameOver.php');
-            } else { // If the user has not used all the lives
-                unset($_SESSION['level_success']);
-                $_SESSION['level_fail'] = 'You have failed level ' . $level . '!';
-            }
+        } else { // If the user input is not valid
+            header('Location: level.php');
         }
     }
+
     // When the user clicks on the next level button
     if(isset($_POST['next-level'])){
         $level++;
@@ -118,6 +125,12 @@
     // If the user has succeeded the level set the success message
     if(isset($_SESSION['level_success'])) {
         $successMessage = $_SESSION['level_success'];
+        $game->output = [];
+        $game->answer = [];
+    }
+    // If the user has an input error set the input error message
+    if(isset($_SESSION['input_error'])) {
+        $inputError = $_SESSION['input_error'];
     }
 ?>
 <!DOCTYPE html>
@@ -163,17 +176,28 @@
                     echo "<div class='alert alert-dismissible alert-danger mt-3 d-flex'>
                                 $failMessage
                                 <form action=\"level.php\" method=\"post\">
-                                    <button type=\"submit\" class=\"level-btn alert-link\" name=\"try-again\">Try again</button>
+                                    <button autofocus type=\"submit\" class=\"level-btn alert-link\" name=\"try-again\">Try again</button>
                                 </form>
                             </div>";
                 } if($successMessage) {
                     echo "<div class='alert alert-dismissible alert-success mt-3 d-flex'>
                                 $successMessage
                                 <form action=\"level.php\" method=\"post\">
-                                    <input type=\"submit\" class=\"level-btn alert-link\" name=\"next-level\" value='Next Level' />
+                                    <input autofocus type=\"submit\" class=\"level-btn alert-link\" name=\"next-level\" value='Next Level' />
                                 </form>
                             </div>";
                 }
+                if ($inputError) {
+                    echo "<div class='alert alert-dismissible alert-danger mt-3 d-flex'>
+                                $inputError
+                                <form action=\"level.php\" method=\"post\">
+                                    <button type=\"button\" class=\"close\" data-dismiss=\"alert\" aria-label=\"Close\">
+                                        <span aria-hidden=\"true\">&times;</span>
+                                    </button>
+                                </form>
+
+                            </div>";
+                } 
                 ?>
                 <div class="card">
                     <div class="card-header d-flex justify-content-between">
@@ -181,10 +205,12 @@
                         <p class="mb-0"><b>Lives:</b> <?php echo MAX_LIVES - $livesUsed . "/" . MAX_LIVES; ?></p>
                     </div>
                     <div class="card-body px-5">
+                        <span>Level progress</span>
                         <div class="progress mb-4">
                             <?php
                             $progress = ($level - 1) * (100 / MAX_LEVEL);
-                            echo "<div class='progress-bar' role='progressbar' style='width: $progress%' aria-valuenow='$progress' aria-valuemin='0' aria-valuemax='100'></div>";
+                            $progress = round($progress);
+                            echo "<div class='progress-bar' role='progressbar' style='width: $progress%' aria-valuenow='$progress' aria-valuemin='0' aria-valuemax='100'>$progress%</div>";
                             ?>
                         </div>
                         <form action="level.php" method="post">
@@ -251,7 +277,7 @@
                 }
             });
         });
-
+        
     </script>
 </body>
 </html>
