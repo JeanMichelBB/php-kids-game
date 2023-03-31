@@ -238,7 +238,7 @@ if (isset($_POST['modify'])) {
     
                 $success_message = "Password successfully modified!";
                 $_SESSION['update_success'] = $success_message;
-    
+                
                 header("Location: ../pages/forgot-password.php");
             } else {
                 $error_message = "Sorry, the new password and confirm new password fields do not match!";

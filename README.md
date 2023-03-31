@@ -14,15 +14,20 @@ This project is a game for kids, where they can learn about the alphabet and num
 ## How to run this project
 
 1. Install [Docker](https://www.docker.com/) on your machine
-2. In the root of the project run: 
+2. Clone this repository running:
+    
+    ```bash
+      git clone https://github.com/anyruizd/php-final-project.git
+    ```
+3. In the main folder of the project run: 
    
    ```bash
     docker-compose up -d
     ```
 
-3. Access the website in http://localhost
-4. Access the phpmyadmin in http://localhost:8000
-5. Stop the project with
+4. Access the website in http://localhost
+5. Access the phpmyadmin in http://localhost:8000
+6. Stop the project with
  
     ```bash
      docker-compose down

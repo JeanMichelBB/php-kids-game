@@ -1,10 +1,10 @@
 <?php
     session_start();
     if(!isset($_SESSION['username'])) {
-        header('Location: ../pages/login.php');
+        header('Location: login.php');
     }
     if(!isset($_SESSION['game_fail']) && !isset($_SESSION['game_success'])) {
-        header('Location: ../pages/level.php');
+        header('Location: level.php');
     }
 
     include_once('./components/components.php');
@@ -19,7 +19,7 @@
 
     if (isset($_POST['try-again'])) {
         unset($_POST['try-again']);
-        header('Location: ../pages/level.php');
+        header('Location: level.php');
     }
 
 ?>
@@ -71,7 +71,7 @@
                                 }
                             ?>
                              <form method="post" action="gameOver.php">
-                                <button type="submit" class="level-btn alert-link" name="try-again">Try again</button>
+                                <button autofocus type="submit" class="level-btn alert-link" name="try-again">Try again</button>
                             </form>
                         </div>
                     </div>

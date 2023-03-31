@@ -10,13 +10,12 @@ include_once('./db/InsertRowToTable.php');
 // Create database and tables
 $db = new CreateDBAndTables();
 $db->creatDBTables();
-// $insert = new InsertRowToTable();
-// $insert->insertScore('failure', 6, 3 );
+
 
 if(!isset($_SESSION['username'])) {
-    header('Location: ../pages/login.php');
+    header('Location: ./pages/login.php');
 } else {
-    header('Location: ../pages/level.php');
+    header('Location: ./pages/level.php');
 }
 
 
