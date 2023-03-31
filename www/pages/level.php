@@ -222,6 +222,7 @@
                                     }
                                     ?>
                                 </label>
+                                <?php if(!in_array($level, [5,6])) { ?>
                                 <div class="form-row justify-content-around">
                                     <?php
                                     for ($i = 0; $i < count($game->answer); $i++) {
@@ -229,6 +230,29 @@
                                     }
                                     ?>
                                 </div>
+                                <?php } ?>
+
+                                <?php if($level == 5) { ?>
+                                <div class="form-row justify-content-around">
+                                    <div>
+                                        First:  <input autofocus maxlength="1" type='text' class='form-control text-center col-md-1.5 myCard answer' name='answer[]' >
+                                    </div>
+                                    <div>
+                                        Last:  <input autofocus maxlength="1" type='text' class='form-control text-center col-md-1.5 myCard answer' name='answer[]' >
+                                    </div>
+                                </div>
+                                <?php } ?>
+
+                                <?php if($level == 6) { ?>
+                                <div class="form-row justify-content-around">
+                                    <div>
+                                    Min:  <input autofocus maxlength="<?= $game->inputMaxLength ?>" type='text' class='form-control text-center col-md-1.5 myCard answer' name='answer[]' >
+                                    </div>
+                                    <div>
+                                    Max:  <input autofocus maxlength="<?= $game->inputMaxLength ?>" type='text' class='form-control text-center col-md-1.5 myCard answer' name='answer[]' >
+                                    </div>
+                                </div>
+                                <?php } ?>
                             </div>
                             <button type="submit" disabled class="btn btn-primary submitBt" <?php echo !$game->output ? 'disabled' : ''; ?> name="submit-answer">Submit</button>
                             <button type="submit" class="btn btn-danger float-right" name="give-up">Give-up</button>

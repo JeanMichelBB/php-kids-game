@@ -62,25 +62,23 @@ class Game
     public function level5()
     {
         $_SESSION['level'] = 5;
-        // TODO: change this for the real level 5
         $letters = $this->generateSetOfRandomLetters(6);
-        $rightAnswer = $this->createCorrectAnswer($letters, 'asc');
+        $rightAnswer = $this->firstLastLetter($letters);
         $this->inputMaxLength = 1;
         $this->output = $letters;
         $this->answer = $rightAnswer;
-        $this->message = 'Write the letters in ascending order';
+        $this->message = 'Identify first and last letters';
     }
 
     public function level6()
     {
         $_SESSION['level'] = 6;
-        // TODO: change this for the real level 6
         $numbers = $this->createArrayOfNum(); 
-        $rightAnswer = $this->createCorrectAnswer($numbers, 'asc');  
+        $rightAnswer = $this->minMaxNumber($numbers);  
         $this->inputMaxLength = 2;
         $this->output = $numbers;
         $this->answer = $rightAnswer;
-        $this->message = 'Write the numbers in ascending order';
+        $this->message = 'Identify the minimum and the maximum numbers';
     }
 
     function generateSetOfRandomLetters($count)
@@ -144,6 +142,17 @@ class Game
             rsort($original);
         }
         return $original;
+    }
+
+
+    public function minMaxNumber($sequence) : array
+    {
+        return [min($sequence),  max($sequence)];
+    }
+
+    public function firstLastLetter($sequence) : array
+    {
+        return [reset($sequence),  end($sequence)];
     }
 
 }
