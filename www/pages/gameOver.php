@@ -6,8 +6,10 @@
     if(!isset($_SESSION['game_fail']) && !isset($_SESSION['game_success'])) {
         header('Location: ../pages/level.php');
     }
+
     include_once('./components/components.php');
     include_once('../game/Game.php');
+    
     unset($_SESSION['livesUsed']);
     unset($_SESSION['level']);
     unset($_SESSION['input_error']);
@@ -19,6 +21,7 @@
         unset($_POST['try-again']);
         header('Location: ../pages/level.php');
     }
+
 ?>
 <!DOCTYPE html>
 <html>
@@ -81,6 +84,16 @@
     <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/js-confetti@latest/dist/js-confetti.browser.js"></script>
+    <script>
+        const jsConfetti = new JSConfetti()
+
+        <?php
+            if ($successMessage) {
+                echo 'jsConfetti.addConfetti();';
+            }
+        ?>
+    </script>
 </body>
 
 </html>
