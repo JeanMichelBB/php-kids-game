@@ -13,13 +13,9 @@
     }
 
     if (isset($_SESSION['reg_error'])) {
-        unset($_SESSION['reg_success']);
         $errorMessage = $_SESSION['reg_error'];
     }
-    if(isset($_SESSION['reg_success'])) {
-        unset($_SESSION['reg_error']);
-        $successMessage = $_SESSION['reg_success'];
-    }
+
 ?>
 <!DOCTYPE html>
 <html>
@@ -51,14 +47,6 @@
                 if ($errorMessage) {
                     echo "<div class='alert alert-dismissible alert-danger fade show mt-3'>
                                 $errorMessage
-                                <button type=\"button\" class=\"close\" data-dismiss=\"alert\" aria-label=\"Close\">
-                                    <span aria-hidden=\"true\">&times;</span>
-                                </button>
-                            </div>";
-                } if($successMessage) {
-                    echo "<div class='alert alert-dismissible alert-success fade show mt-3'>
-                                $successMessage
-                                <a href=\"login.php\" class=\"alert-link\">Log in to your account</a>
                                 <button type=\"button\" class=\"close\" data-dismiss=\"alert\" aria-label=\"Close\">
                                     <span aria-hidden=\"true\">&times;</span>
                                 </button>
