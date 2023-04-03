@@ -12,7 +12,21 @@ This project is a game for kids, where they can learn about the alphabet and num
 - Docker
 
 ## How to run this project
+### If you are using XAMPP
 
+1. Go to the XAMPP directory and choose the folder `htdocs`
+
+2. Open your Command line, right click and chose the option `Open in Terminal`
+
+3. Clone this repository running in your Command line:
+    
+    ```bash
+      git clone https://github.com/anyruizd/php-final-project.git
+    ```
+4. Access the website in http://localhost/php-final-project
+
+
+### If you are using Docker 
 1. Install [Docker](https://www.docker.com/) on your machine
 2. Clone this repository running:
     
@@ -24,7 +38,7 @@ This project is a game for kids, where they can learn about the alphabet and num
    ```bash
     docker-compose up -d
     ```
-
+4. Go to [this file](db/login_info.php), uncomment the credentials for Docker and comment the credentials for XAMPP
 4. Access the website in http://localhost
 5. Access the phpmyadmin in http://localhost:8000
 6. Stop the project with
