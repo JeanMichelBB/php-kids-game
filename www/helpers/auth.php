@@ -209,6 +209,9 @@ if (isset($_POST['connect'])) {
 
 // Log out
 if (isset($_POST['logout'])) {
+    $insert = new InsertRowToTable();
+    $livesUsed = isset($_SESSION['livesUsed']) ? $_SESSION['livesUsed'] : 0;
+    $insert->insertScore('incomplete', $livesUsed, $_SESSION['username']);
     session_destroy();
     header('Location: ../pages/login.php');
 }

@@ -41,11 +41,11 @@ include_once('../db/db.php');
 
                             <thead>
                                 <tr>
-                                    <th scope="col">ID</th>
+                                    <th scope="col">Player ID</th>
                                     <th scope="col">First name</th>
                                     <th scope="col">Last name</th>
                                     <th scope="col">Result</th>
-                                    <th scope="col">Number of lives</th>
+                                    <th scope="col">Lives used</th>
                                     <th scope="col">Date/time</th>
                                 </tr>
                             </thead>

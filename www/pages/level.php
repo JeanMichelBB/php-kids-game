@@ -141,23 +141,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <!-- Include Bootstrap CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
-    <style>
-        .level-btn {
-            background-color: transparent;
-            border: none;
-        }
-        .level-btn:hover {
-            text-decoration: underline;
-            cursor: pointer;
-        }
-        .myCard {
-            width: 50px;
-            height: 50px;
-        }
-        .vh-100 {
-            height: 100vh;
-        }
-    </style>
+    <link rel="stylesheet" href="../css/style.css">
     <title>Level <?php echo $level; ?></title>
 </head>
 
@@ -222,7 +206,6 @@
                                     }
                                     ?>
                                 </label>
-                                <?php if(!in_array($level, [5,6])) { ?>
                                 <div class="form-row justify-content-around">
                                     <?php
                                     for ($i = 0; $i < count($game->answer); $i++) {
@@ -230,29 +213,6 @@
                                     }
                                     ?>
                                 </div>
-                                <?php } ?>
-
-                                <?php if($level == 5) { ?>
-                                <div class="form-row justify-content-around">
-                                    <div>
-                                        First:  <input autofocus maxlength="1" type='text' class='form-control text-center col-md-1.5 myCard answer' name='answer[]' >
-                                    </div>
-                                    <div>
-                                        Last:  <input autofocus maxlength="1" type='text' class='form-control text-center col-md-1.5 myCard answer' name='answer[]' >
-                                    </div>
-                                </div>
-                                <?php } ?>
-
-                                <?php if($level == 6) { ?>
-                                <div class="form-row justify-content-around">
-                                    <div>
-                                    Min:  <input autofocus maxlength="<?= $game->inputMaxLength ?>" type='text' class='form-control text-center col-md-1.5 myCard answer' name='answer[]' >
-                                    </div>
-                                    <div>
-                                    Max:  <input autofocus maxlength="<?= $game->inputMaxLength ?>" type='text' class='form-control text-center col-md-1.5 myCard answer' name='answer[]' >
-                                    </div>
-                                </div>
-                                <?php } ?>
                             </div>
                             <button type="submit" disabled class="btn btn-primary submitBt" <?php echo !$game->output ? 'disabled' : ''; ?> name="submit-answer">Submit</button>
                             <button type="submit" class="btn btn-danger float-right" name="give-up">Give-up</button>

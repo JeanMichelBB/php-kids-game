@@ -63,10 +63,10 @@ class Game
     {
         $_SESSION['level'] = 5;
         $letters = $this->generateSetOfRandomLetters(6);
-        $rightAnswer = $this->firstLastLetter($letters);
+        $rightAnswer = $this->createCorrectAnswer($letters, 'asc');
         $this->inputMaxLength = 1;
         $this->output = $letters;
-        $this->answer = $rightAnswer;
+        $this->answer = [$rightAnswer[0], $rightAnswer[count($rightAnswer) - 1]]; 
         $this->message = 'Identify first and last letters';
     }
 
@@ -74,10 +74,10 @@ class Game
     {
         $_SESSION['level'] = 6;
         $numbers = $this->createArrayOfNum(); 
-        $rightAnswer = $this->minMaxNumber($numbers);  
+        $rightAnswer = $this->createCorrectAnswer($numbers, 'asc');
         $this->inputMaxLength = 2;
         $this->output = $numbers;
-        $this->answer = $rightAnswer;
+        $this->answer = [$rightAnswer[0], $rightAnswer[count($rightAnswer) - 1]];
         $this->message = 'Identify the minimum and the maximum numbers';
     }
 
